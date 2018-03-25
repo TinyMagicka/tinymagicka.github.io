@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>ARTist | TinyMagicka</title>
+    <meta name="author" content="TinyMagicka" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="Android PWN" />
+    <meta name="description" content="背景
+google在android 5 Lollipop 之后将原先的Dalvik虚拟机换成了 Android Runtime(ART) 。ART 有两个新的特性：ahead-of-time compilation dex2oatnative execution of applicationsdex2oat ：ART中的一个模块。使用llvm将apk/jar中的dex文件找出来转换成oat格式文件（实际上是ELF Shared Object 文件）dex2oat在/system/bin/dex2" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">Tags</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metasploit/">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwnable-tw/">pwnable.tw</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/about">关于</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+        
+        
+        
+        
+
+        
+        <div class="author-meta">
+            
+            <div class="author-avatar">
+                <a href="/">
+                    <img src="/images/avatar.png" title="Sanonz">
+                </a>
+            </div>
+            
+            <div class="author-name">TinyMagicka</div>
+            <div class="author-work">Android &amp; Linux PWN</div>
+            <div class="author-location">
+                <i class="icon-location vm"></i>
+                <span class="vm">Beijing, China</span>
+            </div>
+            
+            <div class="author-thread-wrap">
+                <div class="author-threads clearfix">
+                    
+                    <a class="thread-item" href="https://github.com/TinyMagicka" target="_blank" rel="noopener"><i class="icon-github"></i></a>
+                    
+                    
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            ARTist
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2017/08/06/artist/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2017-08-06T02:12:50.000Z" itemprop="datePublished">2017-08-06</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/Android/">Android</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p><font style="font-size:16px"><strong>背景</strong></font><br></p>
+<ul><li>google在android 5 Lollipop 之后将原先的Dalvik虚拟机换成了 Android Runtime(ART) 。<br><a id="more"></a><br></li><li>ART 有两个新的特性：<br></li><li>ahead-of-time compilation dex2oat</li><li>native execution of applications<br><br></li><li>dex2oat ：<br><br></li><li>ART中的一个模块。使用llvm将apk/jar中的dex文件找出来转换成oat格式文件（实际上是ELF Shared Object 文件）</li><li>dex2oat在/system/bin/dex2oat</li><li>android的PMS包管理服务会持续扫描安装目录，如果有新的app安装进来则会调用dex2oar进行编译</li><li>输出目录为 dalvik-cahche<br><br></li><li>Optimizing：dex2oat的后端<br><br></li></ul><br><br><br><font style="font-size:16px"><strong>文章主要贡献</strong></font><br><br><ul><li>揭秘dex2oat和Optimizing</li><li>基于编译器的应用层app插桩：ARTist</li><li>使用ARTist进行动态权限管理/污点跟踪<br><br></li></ul><br><br><br><br><strong>揭秘dex2oat和Optimizing </strong><br><br><br><br><br><ul><li>输入: DVM虚拟机 可以解释执行的格式 apk/jar</li><li>验证: 比DVM更严格的验证——为了可以使用最先进的优化算法</li><li>编译: 是在method一级别的做的，因此编译可以并行，编译完全留给Optimizing实现</li><li>输出:dex2oat将backend。编译产生的原生代码和原始dex文件输出到oat文件中。 oat文件保存dex文件主要是为了保持java代码和原生代码的一致性，并且在debug的时候可以用到。<br></li></ul><br><strong>揭秘dex2oat和Optimizing / 编译</strong><br><br><ul><li>转换:将dex代码转换成一种基于图的中间代码IR<br><br></li><li>IR：一种method级别的控制流图——HGraph 结构化数据和Hinstruction</li><li>HGraph创建之后，扫描dex文件的字节码创建Hinstructions并内联到函数的基本块中</li><li>为了保持java代码，dex节码和art代码的语意一致性。Hgraph会<br><br><ul><li>插入方便debug的指令（例如 segfault-&gt;stack taces）</li><li>插入各种检测代码</li><li>插入分块的指令（将指令和dex字节码对应起来）</li><li>插入 meta-instructions为了保持一致性和debug<br><br></li></ul></li><li>Graph被转化为 single static assignment form(SSA)为了下一步优化做准备<br><br></li></ul>
+
+<ul><li> 优化:</li><li> 原生代码转化: IR节点被代码生成器根据当前平台特定的cpu架构转换为原生代码<br><br></li></ul>
+
+<p><strong>基于编译器的应用层app插桩：ARTist</strong><br></p>
+<ul><li>ART instrumentation and security toolkit 由两部分组成<br><br></li><li>sec-compiler基于dex2oat改装的编译时插桩的编译器</li><li>用于部署,管理该编译器的app<br><br></li><li>sec- compiler 实现在dex2oat的后端Optimizing 的 IR上<br><br><ul><li>由于HOptimization 节后的宽松绑定使得新功能的集成很容易，可以称为模块</li><li>HGraph有访客模式，可以在Hinstruction级别上操纵app的代码，可以用来<br><br><ul><li>确定插桩点</li><li>静态分析<br><br></li></ul></li><li>实现插桩的代码是通过HOptimization 集成到optimization的工作流程中的。这提升了sec-compiler对编译的控制能力甚至可以引入自定义的优化代码<br><br></li></ul></li><li>部署sec-complier<br><br><ul><li>将实现的功能(动态链接库)在assets中携带到app中。根据用户的选择令dex2oat动态加载这些库</li><li>由于编译完成的oat”保存的目录默认需要更高权限才能访问。这里使用了 app virtualization 和 reference hijacking</li><li>部署app 利用DexMerger 功能将原始的字节码和额外的库结合，在编译阶段调用这些方法<br><br></li></ul></li></ul><br><br><strong>ARTist use case ——dynamic permission enforcement</strong><br><br><ul><li>功能由Inlne Reference Monitor injection Module实现</li><li>模块由两部分构成<br><br><ul><li>代码注入功能将permission enforcement code内联进函数</li><li>使用相伴随的库来加强策略性<br><br></li></ul></li><li>在库中定义好的关键函数的调用之前插入检测代码，根据用户的定义策略来判断是否调用<br><br></li></ul><br><br><strong>ARTist use case ——dynamic Taint Tracking</strong><br><br><ul><li>根据性能考虑功能分为两部分<br><br><ul><li>analysis</li><li>instrumentation<br><br></li></ul></li><li>analysisi<br><br><ul><li>定义了两种source and sink<br><br><ul><li>global source and sink</li><li>local source and sink<br><br></li></ul></li><li>识别到要污染的数据的source and sink，只关注相关的flow<br><br></li></ul></li><li>在每个方法中识别出所有的sink(global/local)</li><li>对每个识别出的sink通过tracing back the sink‘s input until a source of a constant is reached<br><br></li><br><ul><li>使用HGraph的visitor模式识别出所有flow的source and sink</li><li>使用静态分析找到相关的data flow</li><li>由于HGraph只能在method级别上查看，所以不能将所有的sorce 和sink一一对应<br></li></ul><li>instrumentation<br><ul><li>将对global source&nbsp;&nbsp;创建taint tag的代码，和对global sink进行check的代码内联</li><li>内联 过程间的污点数据 从local sink到 local source的代码 ，确保过程间的污点传播正常进行</li><li>将污点跟踪的代码逻辑实现在TaintLib中</li><li>为了对过程间的污点传播进行跟踪实现了一个线程安全的<font style="color:rgb(35, 31, 32)"><font style="font-size:13px">ConcurrentHashMap</font></font><br></li></ul></li></ul>
+
+
+
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/08/06/artist/';
+        this.page.title = 'ARTist';
+        this.page.identifier = '2017/08/06/artist/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>
