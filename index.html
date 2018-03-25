@@ -124,11 +124,11 @@
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2017/10/01/pwnable.tw系列——start/">pwnable.tw系列——start</a>
+            <a href="/2017/10/01/pwnable_tw_start/">pwnable.tw系列——start</a>
         </h1>
         
         <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/10/01/pwnable.tw系列——start/">
+            <a class="article-date" href="/2017/10/01/pwnable_tw_start/">
     
     <i class="icon-calendar"></i>
     
@@ -150,7 +150,7 @@
         <p>pwnable.tw系列从此开始  </p>
         
         <p class="article-more-link">
-            <a href="/2017/10/01/pwnable.tw系列——start/#more">
+            <a href="/2017/10/01/pwnable_tw_start/#more">
                 <span class="vm">阅读更多</span>
                 <i class="icon-arrow-double-right vm"></i>    
             </a>
@@ -166,11 +166,11 @@
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2017/09/25/metasploit工作流程图/">metasploit工作流程图</a>
+            <a href="/2017/09/25/metasploit/">metasploit工作流程图</a>
         </h1>
         
         <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/25/metasploit工作流程图/">
+            <a class="article-date" href="/2017/09/25/metasploit/">
     
     <i class="icon-calendar"></i>
     
@@ -190,7 +190,7 @@
     <section class="article-body markdown-body">
         
         <h6 id="metasploit工作流程图"><a href="#metasploit工作流程图" class="headerlink" title="metasploit工作流程图"></a>metasploit工作流程图</h6><p>自己整理的metasploit工作流程图，拥有常用命令，方便记忆</p>
-<p><img src="images/metasploit.png" alt="image"></p>
+<p><img src="/images/metasploit.png" alt="image"></p>
 
         
     </section>
@@ -202,11 +202,11 @@
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2017/09/05/Soot系列/">Soot系列——APK插桩</a>
+            <a href="/2017/09/05/soot_apk/">Soot系列——APK插桩</a>
         </h1>
         
         <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/05/Soot系列/">
+            <a class="article-date" href="/2017/09/05/soot_apk/">
     
     <i class="icon-calendar"></i>
     
@@ -233,32 +233,14 @@
 </code></pre><p>本文中利用插桩技术在apk文件中插入自定义的代码。</p>
 </li>
 <li><p>apktool<br>知名apk文件反编译工具<br><a href="https://github.com/iBotPeaches/Apktool" target="_blank" rel="noopener">https://github.com/iBotPeaches/Apktool</a><br>本文中通过apktool反编译apk，用来对插桩前后的apk进行对比</p>
-</li>
-</ul>
-<h6 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h6><p>首先使用AndroidStudio创建一个示例的apk文件。<br>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package com.tinymagicka.sootinstrumenttest;</span><br><span class="line"></span><br><span class="line">import android.app.Activity;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.util.Log;</span><br><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.i(&quot;haha&quot;, &quot;haha&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到只做了两地方的修改：</p>
-<ul>
-<li>1 导入 Log类</li>
-<li>2 使用 Log.i函数<br>之所以这样做的原因是，我们打算在onCreate函数中插桩的是一个Log.i函数调用语句，为了防止插桩进去之后由于MainActivity中没有导入Log而不能执行插桩的函数。</li>
-</ul>
-<p>将这个android项目的apk文件build出来之后待用。</p>
-<p>然后便是Soot插桩的项目了。这里使用的是eclipse项目，</p>
-<h6 id="需要提前准备的有："><a href="#需要提前准备的有：" class="headerlink" title="需要提前准备的有："></a>需要提前准备的有：</h6><ul>
-<li>Soot-trunk.jar为依赖包 （可以在上面的github链接中找到下载地址）</li>
-<li>androidSDK中的 android.jar(也可以从这下载<a href="https://github.com/Sable/android-platforms" target="_blank" rel="noopener">https://github.com/Sable/android-platforms</a>)<h6 id="项目代码如下，如有不懂请看注视"><a href="#项目代码如下，如有不懂请看注视" class="headerlink" title="项目代码如下，如有不懂请看注视"></a>项目代码如下，如有不懂请看注视</h6></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.Collections;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line">import java.util.List;</span><br><span class="line">import java.util.Map;</span><br><span class="line"></span><br><span class="line">import soot.Body;</span><br><span class="line">import soot.BodyTransformer;</span><br><span class="line">import soot.Local;</span><br><span class="line">import soot.PackManager;</span><br><span class="line">import soot.PatchingChain;</span><br><span class="line">import soot.RefType;</span><br><span class="line">import soot.Scene;</span><br><span class="line">import soot.SootMethod;</span><br><span class="line">import soot.Transform;</span><br><span class="line">import soot.Unit;</span><br><span class="line">import soot.jimple.InvokeStmt;</span><br><span class="line">import soot.jimple.Jimple;</span><br><span class="line">import soot.jimple.StaticInvokeExpr;</span><br><span class="line">import soot.jimple.Stmt;</span><br><span class="line">import soot.jimple.StringConstant;</span><br><span class="line">import soot.options.Options;</span><br><span class="line">import util.Global;</span><br><span class="line"></span><br><span class="line">public class InstrumentTest&#123;</span><br><span class="line">    //android.jat的路径</span><br><span class="line">    public final static String androidJar =  &quot;D:\\SootInstrument\\android-platforms\\&quot;;</span><br><span class="line">    //要处理的apk文件的路径</span><br><span class="line">    public final static String APK           =  &quot;D:\\SootInstrument\\1.apk&quot;;</span><br><span class="line">    //要插桩的类</span><br><span class="line">    public final static String instrumentClassName  = &quot;com.tinymagicka.sootinstrumenttest.MainActivity&quot;;</span><br><span class="line">    //要插桩的函数</span><br><span class="line">    public final static String instrumentMethodName = &quot;onCreate&quot;; </span><br><span class="line">    </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        //set options</span><br><span class="line">        Options.v().set_allow_phantom_refs(true);//设置允许伪类（Phantom class），指的是soot为那些在其classpath找不到的类建立的模型  </span><br><span class="line">        Options.v().set_prepend_classpath(true);//prepend the VM&apos;s classpath to Soot&apos;s own classpath </span><br><span class="line">        Options.v().set_android_jars(androidJar);//设置android jar包路径  </span><br><span class="line">        //input options </span><br><span class="line">        Options.v().set_src_prec(Options.src_prec_apk);</span><br><span class="line">        Options.v().set_process_dir(Collections.singletonList(APK)); </span><br><span class="line">        //output options </span><br><span class="line">        Options.v().set_output_format(Options.output_format_dex);//设置soot的输出格式  </span><br><span class="line">        Options.v().set_force_overwrite(true);//-force-overwrite   </span><br><span class="line">        </span><br><span class="line">        PackManager.v().getPack(&quot;jtp&quot;).add(new Transform(&quot;jtp.myInstrumenter&quot;, new BodyTransformer() &#123;  </span><br><span class="line">              </span><br><span class="line">            @Override  </span><br><span class="line">            protected void internalTransform(final Body b, String phaseName, @SuppressWarnings(&quot;rawtypes&quot;) Map options) &#123;</span><br><span class="line">                // TODO Auto-generated method stub</span><br><span class="line">                //该函数所在的类名字</span><br><span class="line">                String methodClass = b.getMethod().getDeclaringClass().getName();</span><br><span class="line">                //该函数的名字</span><br><span class="line">                String methodName  = b.getMethod().getName();</span><br><span class="line">                if(!methodClass.equals(instrumentClassName)) return ;</span><br><span class="line">                if(!methodName.equals(instrumentMethodName)) return ;</span><br><span class="line">                </span><br><span class="line">                PatchingChain&lt;Unit&gt; units = b.getUnits();  </span><br><span class="line">                Iterator&lt;Unit&gt; unitsIterator = units.snapshotIterator();//获取Body里所有的units,一个Body对应Java里一个方法的方法体，Unit代表里面的语句  </span><br><span class="line">                while(unitsIterator.hasNext())&#123;  </span><br><span class="line">                    Unit  unit = unitsIterator.next();</span><br><span class="line">                    Stmt stmt=(Stmt)unit;//将Unit强制转换为Stmt,Stmt为Jimple里每条语句的表示  </span><br><span class="line">                    if(!stmt.containsInvokeExpr()) continue;</span><br><span class="line">                    </span><br><span class="line">                    //如果是一条调用语句  </span><br><span class="line">                    //获取所调用的方法名</span><br><span class="line">                    String InvokedMethodName = stmt.getInvokeExpr().getMethod().getName();</span><br><span class="line">                    if( InvokedMethodName.equals(&quot;setContentView&quot;))&#123;</span><br><span class="line">                        </span><br><span class="line">                        //创建语句Log.i(&quot;TinyMin&quot;,&quot;TinyMinTest&quot;); </span><br><span class="line">                        String     str1 = &quot;TinyMin&quot;;</span><br><span class="line">                        String     str2 = &quot;TinyMinTest&quot;;</span><br><span class="line">                        SootMethod newMethod = Scene.v().getSootClass(&quot;android.util.Log&quot;).getMethod(&quot;int i(java.lang.String,java.lang.String)&quot;);  </span><br><span class="line">                        StaticInvokeExpr staticInvokeExpr=Jimple.v().newStaticInvokeExpr(newMethod.makeRef(),StringConstant.v(str1),StringConstant.v(str2)); </span><br><span class="line">                        InvokeStmt  invokeStmt = Jimple.v().newInvokeStmt(staticInvokeExpr);</span><br><span class="line">                        </span><br><span class="line">                        //将创建的语句插入到当前的语句后面</span><br><span class="line">                        units.insertAfter(invokeStmt, unit);</span><br><span class="line">                        </span><br><span class="line">                        b.validate(); </span><br><span class="line">                    &#125;  </span><br><span class="line">                       </span><br><span class="line">                &#125;  </span><br><span class="line">        &#125;&#125;));</span><br><span class="line">            </span><br><span class="line">        Scene.v().loadNecessaryClasses();  </span><br><span class="line">        PackManager.v().runPacks();  </span><br><span class="line">        PackManager.v().writeOutput();  </span><br><span class="line">          </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code> 执行之后便可以在SootOutput文件夹中找到插桩后的apk文件
-.注意此时如果想安装测试的话在进行安装之前要对该apk进行签名(apk签名方法很多，可以自行搜索)
-
-现在我们有了插桩前后的apk文件。这里使用apktool对二者进行反编译做对比。
-反编译的命令是 apktool    d    1.apk
-反编译的结果是使用smali语法进行描述的(smali语言与安卓的dalvik字节码是一一对应的
-
-可以发现我们已经在com.tinymagicka.sootinstrumenttest.MainActivity类的onCreate
-函数中的setContentView语句后插入了Log.i(&quot;&quot;)的
-</code></pre>
+        
+        <p class="article-more-link">
+            <a href="/2017/09/05/soot_apk/#more">
+                <span class="vm">阅读更多</span>
+                <i class="icon-arrow-double-right vm"></i>    
+            </a>
+        </p>
+        
         
     </section>
 </article>

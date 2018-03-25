@@ -20,8 +20,7 @@ Soot一款非常厉害的java 优化框架，功能很多。https://github.com/S
 
 apktool知名apk文件反编译工具https://github.com/iBotPeaches/Apktool本文中通过apktool反编译apk，用来对插桩前后的apk进行对比
 
-
-正文首先使用AndroidStudio创建一个示例的apk文件。代码" />
+正文首先使用AndroidStudio创建一个示例的apk文件。代码如" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="baidu-site-verification" content="F0CXvmUgA9" />
@@ -114,7 +113,7 @@ apktool知名apk文件反编译工具https://github.com/iBotPeaches/Apktool本�
         </h1>
         
         <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/05/Soot系列/">
+            <a class="article-date" href="/2017/09/05/soot_apk/">
     
     <i class="icon-calendar"></i>
     
@@ -141,9 +140,10 @@ apktool知名apk文件反编译工具https://github.com/iBotPeaches/Apktool本�
 </code></pre><p>本文中利用插桩技术在apk文件中插入自定义的代码。</p>
 </li>
 <li><p>apktool<br>知名apk文件反编译工具<br><a href="https://github.com/iBotPeaches/Apktool" target="_blank" rel="noopener">https://github.com/iBotPeaches/Apktool</a><br>本文中通过apktool反编译apk，用来对插桩前后的apk进行对比</p>
+<a id="more"></a>
+<h6 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h6><p>首先使用AndroidStudio创建一个示例的apk文件。<br>代码如下：</p>
 </li>
 </ul>
-<h6 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h6><p>首先使用AndroidStudio创建一个示例的apk文件。<br>代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package com.tinymagicka.sootinstrumenttest;</span><br><span class="line"></span><br><span class="line">import android.app.Activity;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.util.Log;</span><br><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Log.i(&quot;haha&quot;, &quot;haha&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到只做了两地方的修改：</p>
 <ul>
@@ -180,9 +180,9 @@ apktool知名apk文件反编译工具https://github.com/iBotPeaches/Apktool本�
     <script>
     window.disqus_config = function () {
         this.language = 'zh';
-        this.page.url = 'http://yoursite.com/2017/09/05/Soot系列/';
+        this.page.url = 'http://yoursite.com/2017/09/05/soot_apk/';
         this.page.title = 'Soot系列——APK插桩';
-        this.page.identifier = '2017/09/05/Soot系列/';
+        this.page.identifier = '2017/09/05/soot_apk/';
     };
     (function() { // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
