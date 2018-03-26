@@ -11,17 +11,27 @@
     <meta name="author" content="TinyMagicka" />
     <meta name="version" content="1.0.0" />
     <meta name="keywords" content="Android PWN" />
-    <meta name="description" content="DroidMOSS   Android apk重打包检测工具功能：给定一个apk计算出该apk与官方市场apk的相似程度用来检测是否是重打包的apk
-步骤：1. 特征提取     
+    <meta name="description" content="DroidMOSS   Android apk重打包检测工具功能： 
+给定一个apk计算出该apk与官方市场apk的相似程度   
+用来检测是否是重打包的apk
+
+步骤：
+1. 特征提取     
 2. 生成指纹     
 3. 基于指纹匹配 
+
+
 步骤1：特征提取：1提取指令序列：
+
 需要足够robust，可以抵抗重打包
 为了对抗混淆：只获取操作码不获取操作数
-使用白名单过滤广告库的干扰2作者信息META-INF 目录包含了作者的证书， 名字联系方式等
+使用白名单过滤广告库的干扰    
 
+2作者信息：
 
-步骤2：生成指纹（将特征缩减，方便大规模apk检验）编辑距" />
+META-INF 目录包含了作者的证书， 名字联系方式等
+
+步骤2：生成指纹（将" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="baidu-site-verification" content="F0CXvmUgA9" />
@@ -98,7 +108,7 @@
         
 
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DroidMOSS-Android-apk重打包检测工具"><span class="toc-number">1.</span> <span class="toc-text">DroidMOSS   Android apk重打包检测工具</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#功能："><span class="toc-number">1.0.0.1.</span> <span class="toc-text">功能：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#步骤："><span class="toc-number">1.0.0.2.</span> <span class="toc-text">步骤：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤1：特征提取："><span class="toc-number">1.1.</span> <span class="toc-text">步骤1：特征提取：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1提取指令序列："><span class="toc-number">1.1.0.1.</span> <span class="toc-text">1提取指令序列：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2作者信息"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">2作者信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤2：生成指纹（将特征缩减，方便大规模apk检验）"><span class="toc-number">1.2.</span> <span class="toc-text">步骤2：生成指纹（将特征缩减，方便大规模apk检验）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#编辑距离？"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">编辑距离？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Fuzzy-Hashing"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">Fuzzy Hashing:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤3：基于指纹进行匹配"><span class="toc-number">1.3.</span> <span class="toc-text">步骤3：基于指纹进行匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调研结果显示重打包的apk主要三种："><span class="toc-number">1.4.</span> <span class="toc-text">调研结果显示重打包的apk主要三种：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺陷："><span class="toc-number">1.5.</span> <span class="toc-text">缺陷：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阅读后收获"><span class="toc-number">1.6.</span> <span class="toc-text">阅读后收获</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DroidMOSS-Android-apk重打包检测工具"><span class="toc-number">1.</span> <span class="toc-text">DroidMOSS   Android apk重打包检测工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤1：特征提取："><span class="toc-number">1.1.</span> <span class="toc-text">步骤1：特征提取：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤2：生成指纹（将特征缩减，方便大规模apk检验）"><span class="toc-number">1.2.</span> <span class="toc-text">步骤2：生成指纹（将特征缩减，方便大规模apk检验）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#编辑距离？"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">编辑距离？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Fuzzy-Hashing"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">Fuzzy Hashing:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤3：基于指纹进行匹配"><span class="toc-number">1.3.</span> <span class="toc-text">步骤3：基于指纹进行匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调研结果显示重打包的apk主要三种："><span class="toc-number">1.4.</span> <span class="toc-text">调研结果显示重打包的apk主要三种：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺陷："><span class="toc-number">1.5.</span> <span class="toc-text">缺陷：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阅读后收获"><span class="toc-number">1.6.</span> <span class="toc-text">阅读后收获</span></a></li></ol></li></ol>
         
     </div>
 </aside>
@@ -133,15 +143,25 @@
     
     <section class="article-body markdown-body">
         
-        <h2 id="DroidMOSS-Android-apk重打包检测工具"><a href="#DroidMOSS-Android-apk重打包检测工具" class="headerlink" title="DroidMOSS   Android apk重打包检测工具"></a>DroidMOSS   Android apk重打包检测工具</h2><h5 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h5><p>给定一个apk计算出该apk与官方市场apk的相似程度<br>用来检测是否是重打包的apk</p>
-<h5 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h5><pre><code>1. 特征提取     
+        <h2 id="DroidMOSS-Android-apk重打包检测工具"><a href="#DroidMOSS-Android-apk重打包检测工具" class="headerlink" title="DroidMOSS   Android apk重打包检测工具"></a>DroidMOSS   Android apk重打包检测工具</h2><pre><code>功能： 
+给定一个apk计算出该apk与官方市场apk的相似程度   
+用来检测是否是重打包的apk
+
+步骤：
+1. 特征提取     
 2. 生成指纹     
 3. 基于指纹匹配 
-</code></pre><h3 id="步骤1：特征提取："><a href="#步骤1：特征提取：" class="headerlink" title="步骤1：特征提取："></a>步骤1：特征提取：</h3><h5 id="1提取指令序列："><a href="#1提取指令序列：" class="headerlink" title="1提取指令序列："></a>1提取指令序列：</h5><ul>
+</code></pre><a id="more"></a>
+<p><img src="Profile.png" alt="image"></p>
+<h3 id="步骤1：特征提取："><a href="#步骤1：特征提取：" class="headerlink" title="步骤1：特征提取："></a>步骤1：特征提取：</h3><p>1提取指令序列：</p>
+<ul>
 <li>需要足够robust，可以抵抗重打包</li>
 <li>为了对抗混淆：只获取操作码不获取操作数</li>
-<li>使用白名单过滤广告库的干扰<h5 id="2作者信息"><a href="#2作者信息" class="headerlink" title="2作者信息"></a>2作者信息</h5><pre><code>META-INF 目录包含了作者的证书， 名字联系方式等
-</code></pre></li>
+<li>使用白名单过滤广告库的干扰    </li>
+</ul>
+<p>2作者信息：</p>
+<ul>
+<li>META-INF 目录包含了作者的证书， 名字联系方式等</li>
 </ul>
 <h3 id="步骤2：生成指纹（将特征缩减，方便大规模apk检验）"><a href="#步骤2：生成指纹（将特征缩减，方便大规模apk检验）" class="headerlink" title="步骤2：生成指纹（将特征缩减，方便大规模apk检验）"></a>步骤2：生成指纹（将特征缩减，方便大规模apk检验）</h3><h5 id="编辑距离？"><a href="#编辑距离？" class="headerlink" title="编辑距离？"></a>编辑距离？</h5><pre><code>指令序列数量过多     
 </code></pre><h5 id="Fuzzy-Hashing"><a href="#Fuzzy-Hashing" class="headerlink" title="Fuzzy Hashing:"></a>Fuzzy Hashing:</h5><pre><code>将指令序列分为多块：重打包只能影响部分块
@@ -158,6 +178,8 @@
 4.  少量的apk植入后门
 </code></pre><h3 id="缺陷："><a href="#缺陷：" class="headerlink" title="缺陷："></a>缺陷：</h3><pre><code>只考虑java指令没有考虑原生代码
 </code></pre><h3 id="阅读后收获"><a href="#阅读后收获" class="headerlink" title="阅读后收获"></a>阅读后收获</h3><pre><code>keytool：apk签名获取工具
+程序代码特征提取和压缩方法
+静态分析方法
 </code></pre>
         
     </section>

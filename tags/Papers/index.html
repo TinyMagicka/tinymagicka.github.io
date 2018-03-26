@@ -147,32 +147,23 @@
     
     <section class="article-body markdown-body">
         
-        <h2 id="DroidMOSS-Android-apk重打包检测工具"><a href="#DroidMOSS-Android-apk重打包检测工具" class="headerlink" title="DroidMOSS   Android apk重打包检测工具"></a>DroidMOSS   Android apk重打包检测工具</h2><h5 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h5><p>给定一个apk计算出该apk与官方市场apk的相似程度<br>用来检测是否是重打包的apk</p>
-<h5 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h5><pre><code>1. 特征提取     
+        <h2 id="DroidMOSS-Android-apk重打包检测工具"><a href="#DroidMOSS-Android-apk重打包检测工具" class="headerlink" title="DroidMOSS   Android apk重打包检测工具"></a>DroidMOSS   Android apk重打包检测工具</h2><pre><code>功能： 
+给定一个apk计算出该apk与官方市场apk的相似程度   
+用来检测是否是重打包的apk
+
+步骤：
+1. 特征提取     
 2. 生成指纹     
 3. 基于指纹匹配 
-</code></pre><h3 id="步骤1：特征提取："><a href="#步骤1：特征提取：" class="headerlink" title="步骤1：特征提取："></a>步骤1：特征提取：</h3><h5 id="1提取指令序列："><a href="#1提取指令序列：" class="headerlink" title="1提取指令序列："></a>1提取指令序列：</h5><ul>
-<li>需要足够robust，可以抵抗重打包</li>
-<li>为了对抗混淆：只获取操作码不获取操作数</li>
-<li>使用白名单过滤广告库的干扰<h5 id="2作者信息"><a href="#2作者信息" class="headerlink" title="2作者信息"></a>2作者信息</h5><pre><code>META-INF 目录包含了作者的证书， 名字联系方式等
-</code></pre></li>
-</ul>
-<h3 id="步骤2：生成指纹（将特征缩减，方便大规模apk检验）"><a href="#步骤2：生成指纹（将特征缩减，方便大规模apk检验）" class="headerlink" title="步骤2：生成指纹（将特征缩减，方便大规模apk检验）"></a>步骤2：生成指纹（将特征缩减，方便大规模apk检验）</h3><h5 id="编辑距离？"><a href="#编辑距离？" class="headerlink" title="编辑距离？"></a>编辑距离？</h5><pre><code>指令序列数量过多     
-</code></pre><h5 id="Fuzzy-Hashing"><a href="#Fuzzy-Hashing" class="headerlink" title="Fuzzy Hashing:"></a>Fuzzy Hashing:</h5><pre><code>将指令序列分为多块：重打包只能影响部分块
-计算每块的hash
-使用rolling hash 匹配块的边界（reset point）
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#Algorithm 1 Generate the app fingerprint</span><br><span class="line"></span><br><span class="line">#Input: Instruction sequence iseq of the app</span><br><span class="line">#Output: Fingerprint fp</span><br><span class="line"></span><br><span class="line">#Description: wsize - sliding window size, rp - reset point value,</span><br><span class="line">#sw - content in sliding window, ph - the piece hash</span><br><span class="line"></span><br><span class="line">set_wsize(wsize)</span><br><span class="line">set_resetpoint(rp)</span><br><span class="line">init_sliding_window(sw)</span><br><span class="line">init_piece_hash(ph)</span><br><span class="line">for all byte d from iseq do</span><br><span class="line">    update_sliding_window(sw, d)</span><br><span class="line">    rh ← rolling_hash(sw)</span><br><span class="line">    update_piece_hash(ph, d)</span><br><span class="line">    if rh = rp then</span><br><span class="line">        fp ← concatenate(f p, ph)</span><br><span class="line">        init_piece_hash(ph)</span><br><span class="line">    end if</span><br><span class="line">end for</span><br><span class="line">return f p</span><br></pre></td></tr></table></figure>
-<p><img src="Algorithm1.png" alt="image"></p>
-<h3 id="步骤3：基于指纹进行匹配"><a href="#步骤3：基于指纹进行匹配" class="headerlink" title="步骤3：基于指纹进行匹配"></a>步骤3：基于指纹进行匹配</h3><pre><code>将目标APK和已经搜集到的APK指纹进行匹配，用相似读判定重打包
-计算两个指纹之间的编辑距离
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#Algorithm 2 Calculate the edit distance between two apps</span><br><span class="line"></span><br><span class="line">#Input: Two fingerprints fp1 and fp2</span><br><span class="line">#Output: Edit distance between fp1 and fp2</span><br><span class="line"></span><br><span class="line">len1 ← strlen(fp1)</span><br><span class="line">len2 ← strlen(fp2)</span><br><span class="line">initialize_two_dimensional_matrix(matrix, len1, len2)</span><br><span class="line"></span><br><span class="line">for i = 0 → len1 do</span><br><span class="line">    for j = 0 → len2 do</span><br><span class="line">        if fp1[i] = fp[j] then</span><br><span class="line">            cost = 0</span><br><span class="line">        else</span><br><span class="line">            cost = 1</span><br><span class="line">        end if</span><br><span class="line">        matrix[i, j] = min(matrix[i−1, j]+1, matrix[i, j − 1] + 1, matrix[i − 1, j − 1] + cost)</span><br><span class="line">    end for</span><br><span class="line">end for</span><br><span class="line">return matrix(len1, len2)</span><br></pre></td></tr></table></figure>
-<h3 id="调研结果显示重打包的apk主要三种："><a href="#调研结果显示重打包的apk主要三种：" class="headerlink" title="调研结果显示重打包的apk主要三种："></a>调研结果显示重打包的apk主要三种：</h3><pre><code>1.  替换广告
-2.  插入广告
-3.  更改广告收入
-4.  少量的apk植入后门
-</code></pre><h3 id="缺陷："><a href="#缺陷：" class="headerlink" title="缺陷："></a>缺陷：</h3><pre><code>只考虑java指令没有考虑原生代码
-</code></pre><h3 id="阅读后收获"><a href="#阅读后收获" class="headerlink" title="阅读后收获"></a>阅读后收获</h3><pre><code>keytool：apk签名获取工具
 </code></pre>
+        
+        <p class="article-more-link">
+            <a href="/2017/10/05/droidmoss/#more">
+                <span class="vm">阅读更多</span>
+                <i class="icon-arrow-double-right vm"></i>    
+            </a>
+        </p>
+        
         
     </section>
 </article>
