@@ -7,11 +7,21 @@
 
     
 
-    <title>TinyMagicka</title>
+    <title>APK重打包检测工具DroidMOSS | TinyMagicka</title>
     <meta name="author" content="TinyMagicka" />
     <meta name="version" content="1.0.0" />
     <meta name="keywords" content="Android PWN" />
-    <meta name="description" content="Android &amp;amp; Linux &amp;amp; PWN" />
+    <meta name="description" content="DroidMOSS   Android apk重打包检测工具功能：给定一个apk计算出该apk与官方市场apk的相似程度用来检测是否是重打包的apk
+步骤：1. 特征提取     
+2. 生成指纹     
+3. 基于指纹匹配 
+步骤1：特征提取：1提取指令序列：
+需要足够robust，可以抵抗重打包
+为了对抗混淆：只获取操作码不获取操作数
+使用白名单过滤广告库的干扰2作者信息META-INF 目录包含了作者的证书， 名字联系方式等
+
+
+步骤2：生成指纹（将特征缩减，方便大规模apk检验）编辑距" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="baidu-site-verification" content="F0CXvmUgA9" />
@@ -34,7 +44,7 @@
 
         
         
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="/">首页</a>
         </li>
         
@@ -84,47 +94,23 @@
 
         
         
+        
+        
 
         
-        <div class="author-meta">
-            
-            <div class="author-avatar">
-                <a href="/">
-                    <img src="/images/avatar.png" title="Sanonz">
-                </a>
-            </div>
-            
-            <div class="author-name">TinyMagicka</div>
-            <div class="author-work">Android &amp; Linux PWN</div>
-            <div class="author-location">
-                <i class="icon-location vm"></i>
-                <span class="vm">Beijing, China</span>
-            </div>
-            
-            <div class="author-thread-wrap">
-                <div class="author-threads clearfix">
-                    
-                    <a class="thread-item" href="https://github.com/TinyMagicka" target="_blank" rel="noopener"><i class="icon-github"></i></a>
-                    
-                    
-                    
-                </div>
-            </div>
-            
-        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DroidMOSS-Android-apk重打包检测工具"><span class="toc-number">1.</span> <span class="toc-text">DroidMOSS   Android apk重打包检测工具</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#功能："><span class="toc-number">1.0.0.1.</span> <span class="toc-text">功能：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#步骤："><span class="toc-number">1.0.0.2.</span> <span class="toc-text">步骤：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤1：特征提取："><span class="toc-number">1.1.</span> <span class="toc-text">步骤1：特征提取：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1提取指令序列："><span class="toc-number">1.1.0.1.</span> <span class="toc-text">1提取指令序列：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2作者信息"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">2作者信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤2：生成指纹（将特征缩减，方便大规模apk检验）"><span class="toc-number">1.2.</span> <span class="toc-text">步骤2：生成指纹（将特征缩减，方便大规模apk检验）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#编辑距离？"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">编辑距离？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Fuzzy-Hashing"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">Fuzzy Hashing:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤3：基于指纹进行匹配"><span class="toc-number">1.3.</span> <span class="toc-text">步骤3：基于指纹进行匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调研结果显示重打包的apk主要三种："><span class="toc-number">1.4.</span> <span class="toc-text">调研结果显示重打包的apk主要三种：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺陷："><span class="toc-number">1.5.</span> <span class="toc-text">缺陷：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阅读后收获"><span class="toc-number">1.6.</span> <span class="toc-text">阅读后收获</span></a></li></ol></li></ol>
         
     </div>
 </aside>
 
 </header>
 
-        <div id="content" class="content">
-    <article class="article" itemscope itemprop="blogPost">
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
     
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2017/10/05/droidmoss/">APK重打包检测工具DroidMOSS</a>
+            APK重打包检测工具DroidMOSS
         </h1>
         
         <div class="article-meta clearfix">
@@ -178,278 +164,27 @@
 </article>
 
 
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/10/01/pwnable_tw_start/">pwnable.tw系列——start</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/10/01/pwnable_tw_start/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-10-01T08:26:08.000Z" itemprop="datePublished">2017-10-01</time>
-</a>
 
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/pwn/">pwn</a>, <a class="article-tag-link" href="/tags/pwnable-tw/">pwnable.tw</a>
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/10/05/droidmoss/';
+        this.page.title = 'APK重打包检测工具DroidMOSS';
+        this.page.identifier = '2017/10/05/droidmoss/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <p>pwnable.tw系列从此开始  </p>
-        
-        <p class="article-more-link">
-            <a href="/2017/10/01/pwnable_tw_start/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/09/25/metasploit/">metasploit工作流程图</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/25/metasploit/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-09-25T08:15:01.000Z" itemprop="datePublished">2017-09-25</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/metasploit/">metasploit</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h6 id="metasploit工作流程图"><a href="#metasploit工作流程图" class="headerlink" title="metasploit工作流程图"></a>metasploit工作流程图</h6><p>自己整理的metasploit工作流程图，拥有常用命令，方便记忆<br>
-        
-        <p class="article-more-link">
-            <a href="/2017/09/25/metasploit/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/09/05/soot_apk/">Soot系列——APK插桩</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/05/soot_apk/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-09-05T06:14:22.000Z" itemprop="datePublished">2017-09-05</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/Android/">Android</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h6 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h6><ul>
-<li><p>Soot<br>一款非常厉害的java 优化框架，功能很多。<br><a href="https://github.com/Sable/soot" target="_blank" rel="noopener">https://github.com/Sable/soot</a></p>
-</li>
-<li><p>插桩</p>
-<pre><code>一般指在可执行文件中插入自定义的代码，用来获取程序执行的信息。
-</code></pre><p>本文中利用插桩技术在apk文件中插入自定义的代码。</p>
-</li>
-<li><p>apktool<br>知名apk文件反编译工具<br><a href="https://github.com/iBotPeaches/Apktool" target="_blank" rel="noopener">https://github.com/iBotPeaches/Apktool</a><br>本文中通过apktool反编译apk，用来对插桩前后的apk进行对比</p>
-        
-        <p class="article-more-link">
-            <a href="/2017/09/05/soot_apk/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/08/06/artist/">ARTist</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/08/06/artist/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-08-06T02:12:50.000Z" itemprop="datePublished">2017-08-06</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/Android/">Android</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <p><font style="font-size:16px"><strong>背景</strong></font><br></p>
-<ul><li>google在android 5 Lollipop 之后将原先的Dalvik虚拟机换成了 Android Runtime(ART) 。<br>
-        
-        <p class="article-more-link">
-            <a href="/2017/08/06/artist/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/08/01/dedecms_recommand/">织梦 recommand 注入漏洞自动化利用工具</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/08/01/dedecms_recommand/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-08-01T06:42:55.000Z" itemprop="datePublished">2017-08-01</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/php/">php</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!usr/bin/env python</span><br><span class="line">#encoding:gbk</span><br><span class="line">#version:0.9</span><br><span class="line">#author:TinyMin</span><br><span class="line"></span><br><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line">import sqlite3</span><br><span class="line">import urllib</span><br><span class="line">import threading</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">本程序是织梦 dedecms recommand.php 的注入漏洞自动化利用工具。</span><br><span class="line">1）使用google镜像来搜索漏洞网站因此镜像可能过段时间就不管用了，那时候只要稍作修改“使用google镜像抓取的配置信息”就行了。</span><br><span class="line">2）程序有些边界设置没有考虑，比如google搜索页数没有上限；子线程不停的进行select没有考虑到数据库记录为空的情况等；</span><br><span class="line">3）由于python的GIL锁所以python不支持真的多线程，不过本程序并不是计算密集型程序，所以这也没关系，不过最好还是多进程+协程。</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
-        
-        <p class="article-more-link">
-            <a href="/2017/08/01/dedecms_recommand/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/07/13/php_eval/">PHP 调用外部程序方法总结</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/07/13/php_eval/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-07-13T12:46:25.000Z" itemprop="datePublished">2017-07-13</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/php/">php</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h6 id="目前一共收集了10种方式："><a href="#目前一共收集了10种方式：" class="headerlink" title="目前一共收集了10种方式："></a>目前一共收集了10种方式：</h6><pre><code>exec()
-shell_exec() 或者 `cmd`
-system()
-passthru()
-popen()
-proc_open()
-pcntl_exec() //需要开启pcntl扩展
-COM组建：Wscript.Shell和Shell.Application
-dl() //通过加载自定义php扩展突破 disable_fucnitons指令的限制
-第十种请直接移步到freebuf  http://www.freebuf.com/articles/web/82801.html
-</code></pre>
-        
-        <p class="article-more-link">
-            <a href="/2017/07/13/php_eval/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-
-
 
 </div>
         <footer class="footer">
@@ -462,6 +197,8 @@ dl() //通过加载自定义php扩展突破 disable_fucnitons指令的限制
     </div>
 
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
     
     <script type="text/javascript">
         $(function() {
@@ -483,6 +220,8 @@ dl() //通过加载自定义php扩展突破 disable_fucnitons指令的限制
                 nodes.navTags.removeClass('tag-show');
             });*/
 
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
             
         });
     </script>
