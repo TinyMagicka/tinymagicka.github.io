@@ -7,11 +7,14 @@
 
     
 
-    <title>Category: pwn | TinyMagicka</title>
+    <title>pwnable.tw系列———orw | TinyMagicka</title>
     <meta name="author" content="TinyMagicka" />
     <meta name="version" content="1.0.0" />
     <meta name="keywords" content="Android PWN" />
-    <meta name="description" content="Android &amp;amp; Linux &amp;amp; PWN" />
+    <meta name="description" content="
+pwnable.tw系列——orw下载orw ，放入ida 查看:
+main函数：
+123456789101112131415161718192021222324252627282930313233; Attributes: bp-based framepublic mainmain proc nearvar_4= dword ptr -4lea     ecx, [esp+4]and     esp, 0FFFFFFF0hpush    dword ptr [ecx-4]push    eb" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="baidu-site-verification" content="F0CXvmUgA9" />
@@ -84,47 +87,23 @@
 
         
         
+        
+        
 
         
-        <div class="author-meta">
-            
-            <div class="author-avatar">
-                <a href="/">
-                    <img src="/images/avatar.png" title="Sanonz">
-                </a>
-            </div>
-            
-            <div class="author-name">TinyMagicka</div>
-            <div class="author-work">Android &amp; Linux PWN</div>
-            <div class="author-location">
-                <i class="icon-location vm"></i>
-                <span class="vm">Beijing, China</span>
-            </div>
-            
-            <div class="author-thread-wrap">
-                <div class="author-threads clearfix">
-                    
-                    <a class="thread-item" href="https://github.com/TinyMagicka" target="_blank" rel="noopener"><i class="icon-github"></i></a>
-                    
-                    
-                    
-                </div>
-            </div>
-            
-        </div>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#pwnable-tw系列——orw"><span class="toc-number">1.</span> <span class="toc-text">pwnable.tw系列——orw</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#main函数："><span class="toc-number">2.</span> <span class="toc-text">main函数：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#orw-seccomp函数："><span class="toc-number">3.</span> <span class="toc-text">orw_seccomp函数：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#exp-py"><span class="toc-number">4.</span> <span class="toc-text">exp.py</span></a></li></ol>
         
     </div>
 </aside>
 
 </header>
 
-        <div id="content" class="content">
-    <article class="article" itemscope itemprop="blogPost">
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
     
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2017/10/04/pwnable-tw-orw/">pwnable.tw系列———orw</a>
+            pwnable.tw系列———orw
         </h1>
         
         <div class="article-meta clearfix">
@@ -177,50 +156,27 @@
 </article>
 
 
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/10/01/pwnabletw_start/">pwnable.tw系列——start</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/10/01/pwnabletw_start/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-10-01T08:26:08.000Z" itemprop="datePublished">2017-10-01</time>
-</a>
 
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/pwn/">pwn</a>, <a class="article-tag-link" href="/tags/pwnable-tw系列/">pwnable.tw系列</a>
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/10/04/pwnable-tw-orw/';
+        this.page.title = 'pwnable.tw系列———orw';
+        this.page.identifier = '2017/10/04/pwnable-tw-orw/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <p>pwnable.tw系列从此开始  </p>
-        
-        <p class="article-more-link">
-            <a href="/2017/10/01/pwnabletw_start/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-
-
 
 </div>
         <footer class="footer">
@@ -233,6 +189,8 @@
     </div>
 
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
     
     <script type="text/javascript">
         $(function() {
@@ -254,6 +212,8 @@
                 nodes.navTags.removeClass('tag-show');
             });*/
 
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
             
         });
     </script>

