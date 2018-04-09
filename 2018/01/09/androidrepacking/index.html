@@ -7,11 +7,16 @@
 
     
 
-    <title>Category: Android | TinyMagicka</title>
+    <title>androidrepacking | TinyMagicka</title>
     <meta name="author" content="TinyMagicka" />
     <meta name="version" content="1.0.0" />
     <meta name="keywords" content="Android PWN" />
-    <meta name="description" content="Android &amp;amp; Linux &amp;amp; PWN" />
+    <meta name="description" content="Android 应用重打包检测综述重打包检测的意义现在应用重打包的现象在android市场中十分普遍。   
+
+黑客通过在流行应用插入恶意代码并放在第三方市场上的方式来大规模的传播恶意程序从而达到自己不可告人的目的。  
+有些人使用重打包的方法在现有的android应用中插入广告代码，或者修改本来应用中的广告从而获取利润。    
+为了躲避检测重打包的应用会通过混淆，加壳等手段来防止被检测。许多android手机用户为了享受到多种多样的android     
+应用程序的功能都打开了“允许安装来" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <meta name="baidu-site-verification" content="F0CXvmUgA9" />
@@ -84,47 +89,23 @@
 
         
         
+        
+        
 
         
-        <div class="author-meta">
-            
-            <div class="author-avatar">
-                <a href="/">
-                    <img src="/images/avatar.png" title="Sanonz">
-                </a>
-            </div>
-            
-            <div class="author-name">TinyMagicka</div>
-            <div class="author-work">Android &amp; Linux PWN</div>
-            <div class="author-location">
-                <i class="icon-location vm"></i>
-                <span class="vm">Beijing, China</span>
-            </div>
-            
-            <div class="author-thread-wrap">
-                <div class="author-threads clearfix">
-                    
-                    <a class="thread-item" href="https://github.com/TinyMagicka" target="_blank" rel="noopener"><i class="icon-github"></i></a>
-                    
-                    
-                    
-                </div>
-            </div>
-            
-        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Android-应用重打包检测综述"><span class="toc-number">1.</span> <span class="toc-text">Android 应用重打包检测综述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#重打包检测的意义"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">重打包检测的意义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#检测思路"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">检测思路</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#思路1-使用静态分析"><span class="toc-number">1.0.0.2.1.</span> <span class="toc-text">思路1 使用静态分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#思路2-使用动态分析"><span class="toc-number">1.0.0.2.2.</span> <span class="toc-text">思路2 使用动态分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#思路3-动静结合"><span class="toc-number">1.0.0.2.3.</span> <span class="toc-text">思路3 动静结合</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动态执行技术选型"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">动态执行技术选型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></li></ol>
         
     </div>
 </aside>
 
 </header>
 
-        <div id="content" class="content">
-    <article class="article" itemscope itemprop="blogPost">
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
     
     <header class="article-header">
         
         <h1 itemprop="name">
-            <a href="/2018/01/09/androidrepacking/">androidrepacking</a>
+            androidrepacking
         </h1>
         
         <div class="article-meta clearfix">
@@ -196,150 +177,27 @@
 </article>
 
 
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/10/05/droidmoss/">APK重打包检测工具DroidMOSS</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/10/05/droidmoss/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-10-05T02:10:45.000Z" itemprop="datePublished">2017-10-05</time>
-</a>
 
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/Android/">Android</a>, <a class="article-tag-link" href="/tags/Papers/">Papers</a>
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2018/01/09/androidrepacking/';
+        this.page.title = 'androidrepacking';
+        this.page.identifier = '2018/01/09/androidrepacking/';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h2 id="DroidMOSS-Android-apk重打包检测工具"><a href="#DroidMOSS-Android-apk重打包检测工具" class="headerlink" title="DroidMOSS   Android apk重打包检测工具"></a>DroidMOSS   Android apk重打包检测工具</h2><pre><code>功能： 
-给定一个apk计算出该apk与官方市场apk的相似程度   
-用来检测是否是重打包的apk
-
-步骤：
-1. 特征提取     
-2. 生成指纹     
-3. 基于指纹匹配 
-</code></pre>
-        
-        <p class="article-more-link">
-            <a href="/2017/10/05/droidmoss/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/09/05/soot_apk/">Soot系列——APK插桩</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/09/05/soot_apk/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-09-05T06:14:22.000Z" itemprop="datePublished">2017-09-05</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/Android/">Android</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <h6 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h6><ul>
-<li><p>Soot<br>一款非常厉害的java 优化框架，功能很多。<br><a href="https://github.com/Sable/soot" target="_blank" rel="noopener">https://github.com/Sable/soot</a></p>
-</li>
-<li><p>插桩</p>
-<pre><code>一般指在可执行文件中插入自定义的代码，用来获取程序执行的信息。
-</code></pre><p>本文中利用插桩技术在apk文件中插入自定义的代码。</p>
-</li>
-<li><p>apktool<br>知名apk文件反编译工具<br><a href="https://github.com/iBotPeaches/Apktool" target="_blank" rel="noopener">https://github.com/iBotPeaches/Apktool</a><br>本文中通过apktool反编译apk，用来对插桩前后的apk进行对比</p>
-        
-        <p class="article-more-link">
-            <a href="/2017/09/05/soot_apk/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-    <article class="article" itemscope itemprop="blogPost">
-    
-    <header class="article-header">
-        
-        <h1 itemprop="name">
-            <a href="/2017/08/06/artist/">ARTist</a>
-        </h1>
-        
-        <div class="article-meta clearfix">
-            <a class="article-date" href="/2017/08/06/artist/">
-    
-    <i class="icon-calendar"></i>
-    
-    <time datetime="2017-08-06T02:12:50.000Z" itemprop="datePublished">2017-08-06</time>
-</a>
-
-            
-<div class="article-tag-list">
-    <i class="icon-tag"></i>
-    <a class="article-tag-link" href="/tags/Android/">Android</a>
-</div>
-
-
-        </div>
-    </header>
-    
-    <section class="article-body markdown-body">
-        
-        <p><font style="font-size:16px"><strong>背景</strong></font><br></p>
-<ul><li>google在android 5 Lollipop 之后将原先的Dalvik虚拟机换成了 Android Runtime(ART) 。<br>
-        
-        <p class="article-more-link">
-            <a href="/2017/08/06/artist/#more">
-                <span class="vm">阅读更多</span>
-                <i class="icon-arrow-double-right vm"></i>    
-            </a>
-        </p>
-        
-        
-    </section>
-</article>
-
-
-
-
 
 </div>
         <footer class="footer">
@@ -352,6 +210,8 @@
     </div>
 
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
     
     <script type="text/javascript">
         $(function() {
@@ -373,6 +233,8 @@
                 nodes.navTags.removeClass('tag-show');
             });*/
 
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
             
         });
     </script>

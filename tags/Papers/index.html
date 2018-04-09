@@ -124,6 +124,83 @@
     <header class="article-header">
         
         <h1 itemprop="name">
+            <a href="/2018/01/09/androidrepacking/">androidrepacking</a>
+        </h1>
+        
+        <div class="article-meta clearfix">
+            <a class="article-date" href="/2018/01/09/androidrepacking/">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2018-01-09T10:25:33.000Z" itemprop="datePublished">2018-01-09</time>
+</a>
+
+            
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/Android/">Android</a>, <a class="article-tag-link" href="/tags/Papers/">Papers</a>
+</div>
+
+
+        </div>
+    </header>
+    
+    <section class="article-body markdown-body">
+        
+        <h1 id="Android-应用重打包检测综述"><a href="#Android-应用重打包检测综述" class="headerlink" title="Android 应用重打包检测综述"></a>Android 应用重打包检测综述</h1><h4 id="重打包检测的意义"><a href="#重打包检测的意义" class="headerlink" title="重打包检测的意义"></a>重打包检测的意义</h4><p>现在应用重打包的现象在android市场中十分普遍。   </p>
+<ol>
+<li>黑客通过在流行应用插入恶意代码并放在第三方市场上的方式来大规模的传播恶意程序从而达到自己不可告人的目的。  </li>
+<li>有些人使用重打包的方法在现有的android应用中插入广告代码，或者修改本来应用中的广告从而获取利润。    </li>
+<li>为了躲避检测重打包的应用会通过混淆，加壳等手段来防止被检测。许多android手机用户为了享受到多种多样的android     </li>
+<li>应用程序的功能都打开了“允许安装来自play商店以外其他来源的应用”这导致了大量的没有经过安全性检验的应用被安装。 因此种种原因导致了应用重打包的普遍性。</li>
+</ol>
+<h4 id="检测思路"><a href="#检测思路" class="headerlink" title="检测思路"></a>检测思路</h4><h5 id="思路1-使用静态分析"><a href="#思路1-使用静态分析" class="headerlink" title="思路1 使用静态分析"></a>思路1 使用静态分析</h5><p>静态代码分析技术难以抵抗混淆和加壳操作</p>
+<ol>
+<li><p>2012年 Wu Zhou [Detecting Repackaged Smartphone Applications in Third-Party Android Marketplaces]<br>基于smail指令序列 构造出应用程序的指纹。并通过两个apk指纹之间的编辑距离来判断应用程序的相似性。</p>
+</li>
+<li><p>2012年Jonathan Crussell[Attack of the Clones: Detecting Cloned Applications on Android Markets]等人实现工具DNADroid。<br>该工具通过对比方法间的依赖图来检测出android应用程序的克隆，并达到较低的误报率。</p>
+</li>
+<li><p>2013年 Jin-Hyuk Jung[Repackaging Attack on Android Banking Applications and Its Countermeasures]等人<br>通过重打包银行apk 验证了攻击银行apk进行转账的可行性。</p>
+</li>
+<li><p>2015年 Jian Chen[Detecting Android Malware Using Clone Detection]等人<br>通过提取已知恶意软件的java代码的类，使用类的克隆检测的方法来识别出包含已知恶意代码的android 应用程序。</p>
+</li>
+<li><p>2015年Yao Du[A static Android malicious code detection method based on multi-source fusion]<br>使用 Dempster–Shafer算法融合了搜集到的各种特征如敏感权限，关键API，重打包特征和控制流图等，使用这种方法对恶意代码检测，实验显示具有非常低的误报率</p>
+</li>
+<li><p>2017年[RepDroid-an automated tool for Android application repackaging detection]<br>Shengtao Yue等人把关注点放在了应用的界面上面。对应用的界面进行建模，量化界面的相似度，通过搜集运行时候的界面信息，计算出相似度来检测出重打包的应用。实验证明该方法可以很好的应对代码加壳和混淆。</p>
+</li>
+<li><p>一种抗混淆的大规模Android应用相似性检测方法<br>使用APK文件解包后的各种文件做特征（XML, 图片等）用来判断相似性？？？</p>
+</li>
+</ol>
+<h5 id="思路2-使用动态分析"><a href="#思路2-使用动态分析" class="headerlink" title="思路2 使用动态分析"></a>思路2 使用动态分析</h5><p>加壳如VMP   应用的执行过程会给动态分析技术带来大量噪声</p>
+<ol>
+<li><p>2018年Andrea Saracino等人[MADAM: Effective and Efficient Behavior-based Android Malware Detection and Prevention]<br>通过 在四个层面——内核，应用，用户，包——进行分析用来检测应用的行为，从而做到对应用进行区分。</p>
+</li>
+<li><p>2012 年[ Symposium—-Aurasium-practical policy enforcement for Android applications]<br>通过重打包方法对应用插入监控代码的方法对应用的关键行为进行监控。这种方法可以有效的监控应用的行为，并且不用修改android操作系统，但是会改变应用的执行过程，API的执行速度会降低</p>
+</li>
+<li><p>[一种基于行为的 Android 重打包应用检测方案]<br>使用strace获取用户长时间操作过程中程序使用的系统调用序列，并用系统调用序列构建向量，通过计算汉明距离的方式来判断重打包</p>
+</li>
+</ol>
+<h5 id="思路3-动静结合"><a href="#思路3-动静结合" class="headerlink" title="思路3 动静结合"></a>思路3 动静结合</h5><ol>
+<li>[基于动静结合的 Android 恶意代码行为相似性检测]<br>反编译和 soot 代码转换框架获取程序控制流图,利用行为子图匹配算法从静态方面对程序行为 相似性进行度量<br>通过自动化测试框架运行程序,利用文本无关压缩算法将捕获到的 trace文件压缩后进行相似性度量。</li>
+</ol>
+<h4 id="动态执行技术选型"><a href="#动态执行技术选型" class="headerlink" title="动态执行技术选型"></a>动态执行技术选型</h4><ol>
+<li>定制ROM， 修改dalvik/art 虚拟机，的对java层和native层进行记录/插桩</li>
+<li>Java层Hook: 使用 反射机制，在Application类中进行插桩操作</li>
+<li>native层Hook： 使用修改GOT表 或者 inline Hook 技术进行修改</li>
+<li>strace 用来获取系统调用，及参数返回值</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>动态代码分析和静态分析技术或者各种特征提取技术，基本上使用来做Android恶意代码分析。同时也可以用来做重打包检测。基本原理就是匹配相似度。 实际上技术是一样的。</p>
+
+        
+    </section>
+</article>
+
+
+    <article class="article" itemscope itemprop="blogPost">
+    
+    <header class="article-header">
+        
+        <h1 itemprop="name">
             <a href="/2017/10/05/droidmoss/">APK重打包检测工具DroidMOSS</a>
         </h1>
         
