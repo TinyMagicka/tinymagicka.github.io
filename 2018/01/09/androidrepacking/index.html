@@ -135,6 +135,7 @@
 <li>为了躲避检测重打包的应用会通过混淆，加壳等手段来防止被检测。许多android手机用户为了享受到多种多样的android     </li>
 <li>应用程序的功能都打开了“允许安装来自play商店以外其他来源的应用”这导致了大量的没有经过安全性检验的应用被安装。 因此种种原因导致了应用重打包的普遍性。</li>
 </ol>
+<a id="more"></a>
 <h4 id="检测思路"><a href="#检测思路" class="headerlink" title="检测思路"></a>检测思路</h4><h5 id="思路1-使用静态分析"><a href="#思路1-使用静态分析" class="headerlink" title="思路1 使用静态分析"></a>思路1 使用静态分析</h5><p>静态代码分析技术难以抵抗混淆和加壳操作</p>
 <ol>
 <li><p>2012年 Wu Zhou [Detecting Repackaged Smartphone Applications in Third-Party Android Marketplaces]<br>基于smail指令序列 构造出应用程序的指纹。并通过两个apk指纹之间的编辑距离来判断应用程序的相似性。</p>
